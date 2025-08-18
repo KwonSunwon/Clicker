@@ -1,0 +1,136 @@
+{
+	"dialogs": [
+
+		{
+			"name": "lobby_StartButton",
+			"text": "게임 시작"
+		},
+		{
+			"name": "lobby_SettingButton",
+			"text": "게임 설정"
+		},
+		{
+			"name": "lobby_ExitButton",
+			"text": "게임 종료"
+		},
+
+
+		{
+			"name": "lS_SettingTitleText",
+			"text": "설정"
+		},
+		{
+			"name": "lS_SettingSaveText",
+			"text": "설정 저장"
+		},
+		{
+			"name": "lS_SettingResetText",
+			"text": "설정 초기화"
+		},
+
+
+		{
+			"name": "lS_ScreenButtonText",
+			"text": "화면"
+		},
+		{
+			"name": "lS_ScreenGammaButtonText",
+			"text": "화면 밝기"
+		},
+		{
+			"name": "lS_ScreenModeButtonText",
+			"text": "화면 비율"
+		},
+
+
+
+		{
+			"name": "lS_SoundButtonText",
+			"text": "오디오"
+		},
+		{
+			"name": "lS_UISoundButtonText",
+			"text": "UI 음량"
+		},
+		{
+			"name": "lS_BGMSoundButtonText",
+			"text": "BGM 음량"
+		},
+		{
+			"name": "lS_GameSoundButtonText",
+			"text": "인게임 음량"
+		},
+
+
+		{
+			"name": "lS_ControlButtonText",
+			"text": "조작"
+		},
+		{
+			"name": "lS_MouseControlButtonText",
+			"text": "마우스 민감도"
+		},
+		{
+			"name": "lS_KC_FrontButtonText",
+			"text": "앞으로 이동"
+		},
+		{
+			"name": "lS_KC_BackButtonText",
+			"text": "뒤로 이동"
+		},
+		{
+			"name": "lS_KC_LeftButtonText",
+			"text": "왼쪽으로 이동"
+		},
+		{
+			"name": "lS_KC_RightButtonText",
+			"text": "오른쪽으로 이동"
+		},
+		{
+			"name": "lS_KC_JumpButtonText",
+			"text": "점프"
+		},
+		{
+			"name": "lS_KC_RunButtonText",
+			"text": "질주"
+		},
+		{
+			"name": "lS_KC_InteractButtonText",
+			"text": "상호작용"
+		},
+		{
+			"name": "lS_KC_Inventory01ButtonText",
+			"text": "1번 아이템 사용"
+		},
+		{
+			"name": "lS_KC_Inventory02ButtonText",
+			"text": "2번 아이템 사용"
+		},
+		{
+			"name": "lS_KC_Inventory03ButtonText",
+			"text": "3번 아이템 사용"
+		},
+		{
+			"name": "lS_KC_Inventory04ButtonText",
+			"text": "4번 아이템 사용"
+		},
+		{
+			"name": "lS_KC_Inventory05ButtonText",
+			"text": "5번 아이템 사용"
+		},
+
+		{
+			"name": "ESC_InviteButtonText",
+			"text": "게임 초대"
+		},
+		{
+			"name": "ESC_SettingButtonText",
+			"text": "게임 설정"
+		},
+		{
+			"name": "ESC_LeaveButtonText",
+			"text": "게임 나가기"
+		}
+	]
+
+}

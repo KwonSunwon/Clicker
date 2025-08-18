@@ -1,0 +1,6 @@
+{
+	"CameraMaxPitch": 60,
+	"CameraMinPitch": -60,
+	"InteractionDistance": 2.5,
+	"MouseSensitivity": 5
+} 

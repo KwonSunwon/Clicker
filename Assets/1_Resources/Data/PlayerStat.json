@@ -1,0 +1,9 @@
+{
+  "WalkSpeed": 6.25,
+  "RunSpeed": 12.5,
+  "MaxStamina": 100,
+  "RegenStaminaPerSecond": 5,
+  "AdditionalStaminaPerCookie": 0.015,
+  "NeedJumpStamina": 20,
+  "NeedRunStaminaPerSec": 10
+} 
