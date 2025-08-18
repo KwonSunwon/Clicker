@@ -22,9 +22,9 @@ public class DataManager
     {
         //StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
 
-		PlayerStat = LoadJson<Data.PlayerStat>("PlayerStat");
-		GameSetting = LoadJson<Data.GameSetting>("GameSetting");
-		DialogDict = LoadJson<Data.DialogData, string, string>("Dialog_ko").MakeDict();
+		//PlayerStat = LoadJson<Data.PlayerStat>("PlayerStat");
+		//GameSetting = LoadJson<Data.GameSetting>("GameSetting");
+		//DialogDict = LoadJson<Data.DialogData, string, string>("Dialog_ko").MakeDict();
 
 
 	}

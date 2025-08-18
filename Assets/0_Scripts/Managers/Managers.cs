@@ -9,8 +9,10 @@ public class Managers : MonoBehaviour
 
 	#region Contents
 	GameManagerEx _game = new GameManagerEx();
+    GoldManager _goldManager = new GoldManager();
 
     public static GameManagerEx Game {  get { return Instance._game; } }
+    public static GoldManager Gold {  get { return Instance._goldManager; } }
 	#endregion
 
 	#region Core
@@ -62,6 +64,8 @@ public class Managers : MonoBehaviour
             s_instance._pool.Init();
             s_instance._sound.Init();
             s_instance._setting.Load();
+            s_instance._goldManager.Init();
+            s_instance._goldManager.TickLoop();
         }		
 	}
 
