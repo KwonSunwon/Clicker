@@ -1,0 +1,4 @@
+*.asset merge=unityyamlmergetool
+*.unity merge=unityyamlmergetool
+*.prefab merge=unityyamlmergetool
+*.meta merge=unityyamlmergetool
