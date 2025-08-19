@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Steamworks;
 using UnityEngine;
 
 public class SecureDataManager
@@ -59,11 +60,12 @@ public class SecureDataManager
         // 고유 ID보다는 보안이 약하지만, 시스템이 항상 동작하도록 보장합니다.
         const string fallbackId = "a_static_fallback_id_for_editor_or_error";
 
-        string deviceId = SystemInfo.deviceUniqueIdentifier;
+        // string deviceId = SystemInfo.deviceUniqueIdentifier;
+        string deviceId = SteamManager.Initialized ? SteamUser.GetSteamID().ToString() : fallbackId;
 
         // --- 안정성 강화 로직 ---
         // 기기 ID가 비어있거나, 유니티가 반환하는 기본 에러 값일 경우 대체 ID를 사용합니다.
-        if (string.IsNullOrEmpty(deviceId) || deviceId == SystemInfo.unsupportedIdentifier)
+        if (string.IsNullOrEmpty(deviceId) || deviceId != SteamUser.GetSteamID().ToString())
         {
             Debug.LogWarning($"<color=orange>[경고] 유효하지 않은 기기 ID가 감지되었습니다. 키 생성을 위해 대체 ID를 사용합니다. (에디터에서는 정상적인 동작일 수 있습니다.)</color>");
             deviceId = fallbackId;
