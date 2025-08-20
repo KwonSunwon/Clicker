@@ -19,7 +19,7 @@ public class TestDataLoader
     public Dictionary<int, TestData> Load()
     {
         Dictionary<int, TestData> dict = new Dictionary<int, TestData>();
-        string dataPath = "C:/Users/kso00/OneDrive/바탕 화면/Clicker/Assets/StreamingAssets/Data/TestData.csv";
+        string dataPath = Application.streamingAssetsPath + "/Data/TestData.csv";
         if (!File.Exists(dataPath))
         {
             Debug.LogError("CSV file not found in Resources/Data/");

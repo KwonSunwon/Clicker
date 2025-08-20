@@ -77,7 +77,7 @@ public class CreateDataScriptsFromCSV
         sb.AppendLine($"    {{");
         sb.AppendLine($"        Dictionary<int, {dataClassName}> dict = new Dictionary<int, {dataClassName}>();");
         // sb.AppendLine($"        TextAsset csvFile = Resources.Load<TextAsset>(\"{dataPath}\");");
-        sb.AppendLine($"        string dataPath = \"{Application.streamingAssetsPath}/Data/{dataClassName}.csv\";");
+        sb.AppendLine($"        string dataPath = Application.streamingAssetsPath + \"/Data/{dataClassName}.csv\";");
         sb.AppendLine($"        if (!File.Exists(dataPath))");
         sb.AppendLine($"        {{");
         sb.AppendLine($"            Debug.LogError(\"CSV file not found in Resources/Data/\");");
