@@ -33,7 +33,7 @@ public class ResourceManager
         }
 
         if (original.GetComponent<Poolable>() != null)
-            return Managers.Pool.Pop(original, parent).gameObject;
+            return Managers.Pool.m_pool_Dictionary[path].Get();
 
         GameObject go = Object.Instantiate(original, parent);
         go.name = original.name;
@@ -48,7 +48,7 @@ public class ResourceManager
         Poolable poolable = go.GetComponent<Poolable>();
         if (poolable != null)
         {
-            Managers.Pool.Push(poolable);
+            //Managers.Pool.Push(poolable);
             return;
         }
 
