@@ -9,7 +9,7 @@ public class CreateDataScriptsFromCSV
     [MenuItem("Tools/Data/Generate Scripts from CSV")]
     public static void GenerateScripts()
     {
-        string csvFilePath = EditorUtility.OpenFilePanel("Select CSV File", Path.Combine(Application.dataPath, "1_Resources/Data/"), "csv");
+        string csvFilePath = EditorUtility.OpenFilePanel("Select CSV File", Path.Combine(Application.streamingAssetsPath, "/Data/"), "csv");
 
         if (string.IsNullOrEmpty(csvFilePath)) { return; }
 
@@ -55,6 +55,9 @@ public class CreateDataScriptsFromCSV
             string fieldName = headers[i].Trim();
             string fieldType = dataTypes[i].Trim();
 
+            if (fieldType == "params" || fieldType == "Params")
+                fieldType = "string[]";
+
             sb.AppendLine($"    public {fieldType} {fieldName};");
         }
         sb.AppendLine("}");
@@ -98,6 +101,10 @@ public class CreateDataScriptsFromCSV
 
             if (type == "string")
                 sb.AppendLine($"            data.{header} = values[{i}].Trim();");
+            else if (type == "params" || type == "Params")
+            {
+                
+            }
             else
                 sb.AppendLine($"            data.{header} = {type}.Parse(values[{i}].Trim());");
         }
@@ -108,5 +115,15 @@ public class CreateDataScriptsFromCSV
         sb.AppendLine("}");
 
         return sb.ToString();
+    }
+
+    /// <summary>
+    ///  CSV 파일에서 데이터를 불러올 때 중간에 삽입된 Json형식을 장상적으로 파싱하기 위한 헬퍼 메서드
+    /// </summary>
+    public static List<string> ParseCsvLine(string line)
+    {
+        List<string> result = new List<string>();
+
+        return result;
     }
 }

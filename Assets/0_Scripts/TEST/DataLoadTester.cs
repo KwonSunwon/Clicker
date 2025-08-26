@@ -21,6 +21,16 @@ public class DataLoadTester : MonoBehaviour
             Debug.Log($"ID: {item.Value.ID}, Name: {item.Value.Name}, HP: {item.Value.HP}, Gold: {item.Value.Gold}");
         }
 
+        Debug.Log("-- Test Data Complete --");
+
+        var loader2 = new TestSkillDataLoader().Load();
+        foreach (var item in loader2)
+        {
+            Debug.Log($"ID: {item.Value.ID}, SkillName: {item.Value.skillName}, Description: {item.Value.description}, EffectType: {item.Value.effectType}, Parameters: {item.Value.parameters}, RequiredLevel: {item.Value.requiredLevel}, Cost: {item.Value.cost}");
+        }
+
+        Debug.Log("-- Test Skill Data Complete --");
+
         Debug.Log("--- CSV 데이터 로드 테스트 종료 ---");
     }
 }
