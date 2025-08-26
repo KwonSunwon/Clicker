@@ -1,8 +1,6 @@
 // Auto-generated data class from CSV
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -28,14 +26,15 @@ public class TestDataLoader
         string[] lines = File.ReadAllLines(dataPath);
         for (int i = 2; i < lines.Length; i++)
         {
+            int cnt = 0;
             string line = lines[i].Trim();
             if (string.IsNullOrEmpty(line) || line.StartsWith("#")) continue;
             string[] values = line.Split(',');
             TestData data = new TestData();
-            data.ID = int.Parse(values[0].Trim());
-            data.Name = values[1].Trim();
-            data.HP = float.Parse(values[2].Trim());
-            data.Gold = int.Parse(values[3].Trim());
+            data.ID = int.Parse(values[cnt++].Trim());
+            data.Name = values[cnt++].Trim();
+            data.HP = float.Parse(values[cnt++].Trim());
+            data.Gold = int.Parse(values[cnt++].Trim());
             dict.Add(data.ID, data);
         }
         return dict;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -13,6 +12,8 @@ public class CreateDataScriptsFromCSV
 
         if (string.IsNullOrEmpty(csvFilePath)) { return; }
 
+        Debug.Log($"Selected CSV file: {csvFilePath}");
+
         string fileName = Path.GetFileNameWithoutExtension(csvFilePath);
         string dataClassName = fileName;
 
@@ -26,9 +27,12 @@ public class CreateDataScriptsFromCSV
         }
 
         string dataClassCode = GenerateDataClassCode(dataClassName, lines);
+        Debug.Log($"클래스 코드 생성 완료");
         string dataLoaderCode = GenerateDataLoaderCode(dataClassName, lines);
+        Debug.Log($"로더 코드 생성 완료");
 
         File.WriteAllText(dataClassPath, dataClassCode + dataLoaderCode);
+        Debug.Log($"Data class and loader scripts generated at: {dataClassPath}");
 
         AssetDatabase.Refresh();
     }
@@ -43,8 +47,6 @@ public class CreateDataScriptsFromCSV
         sb.AppendLine("// Auto-generated data class from CSV");
         sb.AppendLine("using System.Collections.Generic;");
         sb.AppendLine("using System.IO;");
-        sb.AppendLine("using System.Text;");
-        sb.AppendLine("using UnityEditor;");
         sb.AppendLine("using UnityEngine;");
         sb.AppendLine();
         sb.AppendLine("[System.Serializable]");
@@ -56,7 +58,7 @@ public class CreateDataScriptsFromCSV
             string fieldType = dataTypes[i].Trim();
 
             if (fieldType == "params" || fieldType == "Params")
-                fieldType = "string[]";
+                fieldType = "List<string>";
 
             sb.AppendLine($"    public {fieldType} {fieldName};");
         }
@@ -89,6 +91,7 @@ public class CreateDataScriptsFromCSV
         sb.AppendLine($"        string[] lines = File.ReadAllLines(dataPath);");
         sb.AppendLine($"        for (int i = 2; i < lines.Length; i++)");
         sb.AppendLine($"        {{");
+        sb.AppendLine($"            int cnt = 0;");
         sb.AppendLine($"            string line = lines[i].Trim();");
         sb.AppendLine($"            if (string.IsNullOrEmpty(line) || line.StartsWith(\"#\")) continue;");
 
@@ -100,13 +103,18 @@ public class CreateDataScriptsFromCSV
             string type = dataTypes[i].Trim();
 
             if (type == "string")
-                sb.AppendLine($"            data.{header} = values[{i}].Trim();");
+                sb.AppendLine($"            data.{header} = values[cnt++].Trim();");
             else if (type == "params" || type == "Params")
             {
-                
+                sb.AppendLine($"            data.{header} = new List<string>();");
+                sb.AppendLine($"            do");
+                sb.AppendLine($"            {{");
+                sb.AppendLine($"                data.{header}.Add(values[cnt].Trim().Replace(\"\\\"\", \"\"));");
+                sb.AppendLine($"            }} while (values[cnt++] != values[^1]);");
             }
             else
-                sb.AppendLine($"            data.{header} = {type}.Parse(values[{i}].Trim());");
+                sb.AppendLine($"            data.{header} = {type}.Parse(values[cnt++].Trim());");
+
         }
         sb.AppendLine($"            dict.Add(data.ID, data);");
         sb.AppendLine($"        }}");
@@ -115,15 +123,5 @@ public class CreateDataScriptsFromCSV
         sb.AppendLine("}");
 
         return sb.ToString();
-    }
-
-    /// <summary>
-    ///  CSV 파일에서 데이터를 불러올 때 중간에 삽입된 Json형식을 장상적으로 파싱하기 위한 헬퍼 메서드
-    /// </summary>
-    public static List<string> ParseCsvLine(string line)
-    {
-        List<string> result = new List<string>();
-
-        return result;
     }
 }

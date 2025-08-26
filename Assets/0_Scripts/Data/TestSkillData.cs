@@ -29,11 +29,10 @@ public class TestSkillDataLoader
         string[] lines = File.ReadAllLines(dataPath);
         for (int i = 2; i < lines.Length; i++)
         {
+            int cnt = 0;
             string line = lines[i].Trim();
             if (string.IsNullOrEmpty(line) || line.StartsWith("#")) continue;
             string[] values = line.Split(',');
-            int cnt = 0;
-
             TestSkillData data = new TestSkillData();
             data.ID = int.Parse(values[cnt++].Trim());
             data.skillName = values[cnt++].Trim();
@@ -41,13 +40,11 @@ public class TestSkillDataLoader
             data.effectType = values[cnt++].Trim();
             data.requiredLevel = int.Parse(values[cnt++].Trim());
             data.cost = long.Parse(values[cnt++].Trim());
-
             data.parameters = new List<string>();
             do
             {
                 data.parameters.Add(values[cnt].Trim().Replace("\"", ""));
             } while (values[cnt++] != values[^1]);
-
             dict.Add(data.ID, data);
         }
         return dict;
