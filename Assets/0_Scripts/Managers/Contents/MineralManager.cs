@@ -45,11 +45,7 @@ public class MineralManager
 	//Test 코드(엄장헌) 1.0f로 바꿀예정
 	private float tickInterval = 0.01f;
 
-	public void MineralInit()
-	{
-		_map.Clear();
 
-	}
 
 	public void Init()
 	{

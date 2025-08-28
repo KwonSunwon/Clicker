@@ -53,6 +53,7 @@ public class Define
         Drag,
         Enter,
         Exit,
+        Scroll
     }
 
     public enum MouseEvent

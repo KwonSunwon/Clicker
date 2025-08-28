@@ -74,6 +74,10 @@ public abstract class UI_Base : MonoBehaviour
 				evt.OnExitHandler -= action;
 				evt.OnExitHandler += action;
 				break;
+			case Define.UIEvent.Scroll:
+				evt.OnScrollHandler -= action;
+				evt.OnScrollHandler += action;
+				break;
 
 		}
 	}
