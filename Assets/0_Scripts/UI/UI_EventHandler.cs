@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, /*IDragHandler*/ IPointerEnterHandler, IPointerExitHandler,IScrollHandler
+public class UI_PointerClickEventHandler : MonoBehaviour, IPointerClickHandler
 {
-    public Action<PointerEventData> OnClickHandler = null;
-    public Action<PointerEventData> OnDragHandler = null;
-    public Action<PointerEventData> OnEnterHandler = null;
-    public Action<PointerEventData> OnExitHandler = null;
-    public Action<PointerEventData> OnScrollHandler = null;
+	public Action<PointerEventData> OnClickHandler = null;
+
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
@@ -18,23 +15,46 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, /*IDragHandl
 			OnClickHandler.Invoke(eventData);
 	}
 
-	public void OnDrag(PointerEventData eventData)
-    {
-		if (OnDragHandler != null)
-            OnDragHandler.Invoke(eventData);
-	}
 
-	public void OnPointerExit(PointerEventData eventData)
+}
+
+public class UI_IDragEventHandler : MonoBehaviour, IDragHandler
+{
+	public Action<PointerEventData> OnDragHandler = null;
+	public void OnDrag(PointerEventData eventData)
 	{
-		if (OnExitHandler != null)
-			OnExitHandler.Invoke(eventData);
+		if (OnDragHandler != null)
+			OnDragHandler.Invoke(eventData);
 	}
+}
+
+public class UI_PointerEnterEventHandler : MonoBehaviour, IPointerEnterHandler
+{
+	public Action<PointerEventData> OnEnterHandler = null;
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		if (OnEnterHandler != null)
 			OnEnterHandler.Invoke(eventData);
 	}
+}
+
+public class UI_PointerExitEventHandler : MonoBehaviour, IPointerExitHandler
+{
+	public Action<PointerEventData> OnExitHandler = null;
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		if (OnExitHandler != null)
+			OnExitHandler.Invoke(eventData);
+	}
+}
+
+public class UI_ScrollEventHandler : MonoBehaviour, IScrollHandler
+{
+
+	public Action<PointerEventData> OnScrollHandler = null;
+
 
 	public void OnScroll(PointerEventData eventData)
 	{

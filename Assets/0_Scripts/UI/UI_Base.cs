@@ -52,34 +52,35 @@ public abstract class UI_Base : MonoBehaviour
 
 	public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
 	{
-		UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 
 		switch (type)
 		{
 			case Define.UIEvent.Click:
-				evt.OnClickHandler -= action;
-				evt.OnClickHandler += action;
-				break;
-			case Define.UIEvent.Drag:
-				evt.OnDragHandler -= action;
-				evt.OnDragHandler += action;
+				var click = Util.GetOrAddComponent<UI_PointerClickEventHandler>(go);
+				click.OnClickHandler -= action; click.OnClickHandler += action;
 				break;
 
 			case Define.UIEvent.Enter:
-				evt.OnEnterHandler -= action;
-				evt.OnEnterHandler += action;
+				var hoverIn = Util.GetOrAddComponent<UI_PointerEnterEventHandler>(go);
+				hoverIn.OnEnterHandler -= action; hoverIn.OnEnterHandler += action;
 				break;
 
 			case Define.UIEvent.Exit:
-				evt.OnExitHandler -= action;
-				evt.OnExitHandler += action;
-				break;
-			case Define.UIEvent.Scroll:
-				evt.OnScrollHandler -= action;
-				evt.OnScrollHandler += action;
+				var hoverOut = Util.GetOrAddComponent<UI_PointerExitEventHandler>(go);
+				hoverOut.OnExitHandler -= action; hoverOut.OnExitHandler += action;
 				break;
 
+			case Define.UIEvent.Scroll:
+				var scroll = Util.GetOrAddComponent<UI_ScrollEventHandler>(go);
+				scroll.OnScrollHandler -= action; scroll.OnScrollHandler += action;
+				break;
+
+			case Define.UIEvent.Drag:
+				var drag = Util.GetOrAddComponent<UI_IDragEventHandler>(go);
+				drag.OnDragHandler -= action; drag.OnDragHandler += action;
+				break;
 		}
+
 	}
 
 	protected void SetLocalizedText<TEnum>() where TEnum : Enum
