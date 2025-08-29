@@ -1,20 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
     static Managers s_instance; // 유일성이 보장된다
     static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
 
-	#region Contents
-	GameManagerEx _game = new GameManagerEx();
+    #region Contents
+    GameManagerEx _game = new GameManagerEx();
+    AchievementManager _achievement = new AchievementManager();
 
-    public static GameManagerEx Game {  get { return Instance._game; } }
-	#endregion
+    public static GameManagerEx Game { get { return Instance._game; } }
+    public static AchievementManager Achievement { get { return Instance._achievement; } }
+    #endregion
 
-	#region Core
-	DataManager _data = new DataManager();
+    #region Core
+    DataManager _data = new DataManager();
     InputManager _input = new InputManager();
     PoolManager _pool = new PoolManager();
     ResourceManager _resource = new ResourceManager();
@@ -31,24 +31,24 @@ public class Managers : MonoBehaviour
     public static SoundManager Sound { get { return Instance._sound; } }
     public static UIManager UI { get { return Instance._ui; } }
     public static SettingManager Setting { get { return Instance._setting; } }
-	#endregion
+    #endregion
 
-	void Start()
+    void Start()
     {
         Init();
-	}
+    }
 
-	private void FixedUpdate()
-	{
-		_input.OnUpdate();
-	}
-	
+    private void FixedUpdate()
+    {
+        _input.OnUpdate();
+    }
+
 
     static void Init()
     {
         if (s_instance == null)
         {
-			GameObject go = GameObject.Find("@Managers");
+            GameObject go = GameObject.Find("@Managers");
             if (go == null)
             {
                 go = new GameObject { name = "@Managers" };
@@ -62,8 +62,10 @@ public class Managers : MonoBehaviour
             s_instance._pool.Init();
             s_instance._sound.Init();
             s_instance._setting.Load();
-        }		
-	}
+
+            s_instance._achievement.Init();
+        }
+    }
 
     public static void Clear()
     {
