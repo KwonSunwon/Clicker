@@ -10,9 +10,11 @@ public class Managers : MonoBehaviour
 	#region Contents
 	GameManagerEx _game = new GameManagerEx();
     MineralManager _mineralManager = new MineralManager();
+    SkillManager _skillManager = new SkillManager();
 
     public static GameManagerEx Game {  get { return Instance._game; } }
     public static MineralManager Mineral {  get { return Instance._mineralManager; } }
+    public static SkillManager Skill { get { return Instance._skillManager; } }
 	#endregion
 
 	#region Core
@@ -24,6 +26,7 @@ public class Managers : MonoBehaviour
     SoundManager _sound = new SoundManager();
     UIManager _ui = new UIManager();
     SettingManager _setting = new SettingManager();
+
 
     public static DataManager Data { get { return Instance._data; } }
     public static InputManager Input { get { return Instance._input; } }
@@ -66,6 +69,7 @@ public class Managers : MonoBehaviour
             s_instance._setting.Load();
             s_instance._mineralManager.Init();
             s_instance._mineralManager.TickLoop();
+            s_instance._skillManager.Init();
         }		
 	}
 

@@ -1,9 +1,11 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UI_Scene_Skill : UI_Scene
 {
+	static public event Action<PointerEventData> GlobalClick;
    enum GameObjects
 	{
 		UI_Main_Scroll_Viewport_Content,
@@ -17,6 +19,7 @@ public class UI_Scene_Skill : UI_Scene
 		Bind<GameObject>(typeof(GameObjects));
 		//Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
 		Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
+		Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(GrobalClickEvent, Define.UIEvent.Click);
 	}
 
 	private RectTransform content;
@@ -24,13 +27,9 @@ public class UI_Scene_Skill : UI_Scene
 	private float minZoom = 0.5f;
 	private float maxZoom = 2f;
 	private Vector3 targetScale;
-	private float lerpSpeed = 10f; // 보간 속도
+	//private float lerpSpeed = 10f; // 보간 속도
 	public void ScrollEvent(PointerEventData eventData)
 	{
-		if (eventData.pointerCurrentRaycast.gameObject != null)
-		{
-			Debug.Log("현재 레이캐스트 타겟: " + eventData.pointerCurrentRaycast.gameObject.name);
-		}
 		if (content == null)
 		{
 			content = Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).GetComponent<RectTransform>();
@@ -50,5 +49,9 @@ public class UI_Scene_Skill : UI_Scene
 		}
 	}
 
-	
+	public static void GrobalClickEvent(PointerEventData eventData)
+	{
+		GlobalClick?.Invoke(eventData);
+	}
+
 }
