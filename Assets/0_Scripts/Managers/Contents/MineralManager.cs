@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,7 +14,7 @@ public enum MineralType
 	Stone,
 	Coal,
 	MaxNum
-	// ÇÊ¿ä½Ã °è¼Ó Ãß°¡ °¡´É
+	// í•„ìš”ì‹œ ê³„ì† ì¶”ê°€ ê°€ëŠ¥
 }
 
 
@@ -25,7 +25,7 @@ public class MineralSlot
 	public MineralType Type;
 	public BigNumber Amount;
 	public BigNumber PerTick;
-	public TextMeshProUGUI Text; // UI ¿¬°á (¾ø¾îµµ µ¿ÀÛ)
+	public TextMeshProUGUI Text; // UI ì—°ê²° (ì—†ì–´ë„ ë™ì‘)
 
 	public MineralSlot(MineralType type, BigNumber startAmount, BigNumber startPerTick, TextMeshProUGUI text = null)
 	{
@@ -42,19 +42,19 @@ public class MineralManager
 
 	private readonly Dictionary<MineralType, MineralSlot> _map = new Dictionary<MineralType, MineralSlot>();
 
-	//Test ÄÚµå(¾öÀåÇå) 1.0f·Î ¹Ù²Ü¿¹Á¤
+	//Test ì½”ë“œ(ì—„ì¥í—Œ) 1.0fë¡œ ë°”ê¿€ì˜ˆì •
 	private float tickInterval = 0.01f;
 
 
 
 	public void Init()
 	{
-		//Todo ¼¼ÀÌºê µ¥ÀÌÅÍ¿¡¼­ °ªÀ» ºÒ·¯¿Í¼­ ¿¬µ¿ÇÒ ¿¹Á¤
+		//Todo ì„¸ì´ë¸Œ ë°ì´í„°ì—ì„œ ê°’ì„ ë¶ˆëŸ¬ì™€ì„œ ì—°ë™í•  ì˜ˆì •
 		var slots = new List<MineralSlot>
 		{
-			new MineralSlot(MineralType.Gold, new BigNumber(0), new BigNumber(100)),
-			new MineralSlot(MineralType.Stone, new BigNumber(0), new BigNumber(10)),
-			new MineralSlot(MineralType.Coal, new BigNumber(0), new BigNumber(5))
+			new MineralSlot(MineralType.Gold, new BigNumber(200), new BigNumber(0)),
+			new MineralSlot(MineralType.Stone, new BigNumber(100), new BigNumber(0)),
+			new MineralSlot(MineralType.Coal, new BigNumber(300), new BigNumber(0))
 		};
 
 		_map.Clear();
@@ -64,7 +64,7 @@ public class MineralManager
 			UpdateUIText(slot, 2);
 		}
 
-		// Tick ½ÃÀÛ
+		// Tick ì‹œì‘
 		CoroutineRunner.Instance.StartCoroutine(TickLoop());
 	}
 

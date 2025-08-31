@@ -139,9 +139,6 @@ public class SkillNodeData
 	public List<(MineralType mineralType, BigNumber cost)> SkillCost { get; set; }
 	public List<int> precedingSkills { get; set; }
 
-
-
-
 	public int Level { get; set; } //0이라면 배우지 않은것
 	
 

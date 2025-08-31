@@ -33,7 +33,8 @@ public class UI_Skill_Button_Base : UI_Base
 
 	enum GameObjects
 	{
-		UI_Skill_Explain_Panel
+		UI_Skill_Explain_Panel,
+		UI_Cost_Bundle
 	}
 	public override void Init()
 	{
@@ -51,6 +52,15 @@ public class UI_Skill_Button_Base : UI_Base
 		Get<TextMeshProUGUI>((int)Texts.UI_Skill_Name_Text).text = _skillData.Name;
 		Get<TextMeshProUGUI>((int)Texts.UI_Skill_Explain_Text).text = _skillData.Description;
 		Get<TextMeshProUGUI>((int)Texts.UI_Skill_Level_Text).text = $"{_skillData.Level}/{_skillData.MaxLevel}";
+
+		GameObject costBundle = Get<GameObject>((int)GameObjects.UI_Cost_Bundle);
+		foreach(var skillCost in _skillData.SkillCost)
+		{
+
+			GameObject go = Managers.UI.MakeSubItem<UI_Cost_Image_Pack>(costBundle.transform).gameObject;
+			UI_Cost_Image_Pack ImageCost = go.GetOrAddComponent<UI_Cost_Image_Pack>();
+			ImageCost.SetCost(skillCost.cost);
+		}
 
 		gameObject.BindEvent(ClickedButton);
 		Get<Button>((int)Buttons.UI_Skill_Purchase_Button).gameObject.BindEvent(ClickedPurchaseButton);
