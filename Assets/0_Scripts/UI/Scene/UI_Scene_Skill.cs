@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+ï»¿using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,19 +24,19 @@ public class UI_Scene_Skill : UI_Scene
 	private float minZoom = 0.5f;
 	private float maxZoom = 2f;
 	private Vector3 targetScale;
-	private float lerpSpeed = 10f; // º¸°£ ¼Óµµ
+	private float lerpSpeed = 10f; // ë³´ê°„ ì†ë„
 	public void ScrollEvent(PointerEventData eventData)
 	{
 		if (eventData.pointerCurrentRaycast.gameObject != null)
 		{
-			Debug.Log("ÇöÀç ·¹ÀÌÄ³½ºÆ® Å¸°Ù: " + eventData.pointerCurrentRaycast.gameObject.name);
+			Debug.Log("í˜„ì¬ ë ˆì´ìºìŠ¤íŠ¸ íƒ€ê²Ÿ: " + eventData.pointerCurrentRaycast.gameObject.name);
 		}
 		if (content == null)
 		{
 			content = Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).GetComponent<RectTransform>();
 		}
 
-		float scroll = eventData.scrollDelta.y; // ¸¶¿ì½º ÈÙ ÀÔ·Â
+		float scroll = eventData.scrollDelta.y; // ë§ˆìš°ìŠ¤ íœ  ì…ë ¥
 		if (scroll != 0)
 		{
 			Vector3 scale = content.localScale;
