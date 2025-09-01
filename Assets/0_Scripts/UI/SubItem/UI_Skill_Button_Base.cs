@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
 public class UI_Skill_Button_Base : UI_Base
 {
 	[SerializeField] int _id;
@@ -89,8 +89,28 @@ public class UI_Skill_Button_Base : UI_Base
 
 	public void ClickedButton(PointerEventData data)
 	{
-		bool isActive = Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel).activeSelf;
-		Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel).SetActive(!isActive);
+		var panel = Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel);
+
+		bool isActive = panel.activeSelf;
+		
+		if (!isActive) // 켤 때
+		{
+			panel.SetActive(true);
+			// DOTween 초기화
+			panel.transform.localScale = Vector3.zero;
+
+			// 1초 동안 0 -> 1 스케일 업
+			panel.transform.DOScale(Vector3.one, 1f)
+				.SetEase(Ease.OutBack); // 부드럽게 튀어나오는 느낌
+		}
+		else // 끌 때
+		{
+			// 꺼질 때 애니메이션도 넣고 싶으면 여기
+			panel.transform.DOScale(Vector3.zero, 0.5f)
+				.SetEase(Ease.InBack)
+				.OnComplete(() => panel.SetActive(false));
+		}
+
 		UI_Scene_Skill.GrobalClickEvent(data);
 	}
 
@@ -103,10 +123,14 @@ public class UI_Skill_Button_Base : UI_Base
 	public void UpdatePanel(PointerEventData data)
 	{
 		if (!Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel).activeSelf) return;
-		Debug.Log(data.pointerClick.name);
+		//Debug.Log(data.pointerClick.name);
 		if (data.pointerClick.gameObject!=gameObject)
 		{
-			Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel).SetActive(false);
+			var panel = Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel);
+			panel.transform.DOScale(Vector3.zero, 0.5f)
+				.SetEase(Ease.InBack)
+				.OnComplete(() => panel.SetActive(false));
+			//Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel).SetActive(false);
 		}
 	}
 }
