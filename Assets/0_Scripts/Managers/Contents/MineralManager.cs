@@ -52,9 +52,9 @@ public class MineralManager
 		//Todo 세이브 데이터에서 값을 불러와서 연동할 예정
 		var slots = new List<MineralSlot>
 		{
-			new MineralSlot(MineralType.Gold, new BigNumber(200), new BigNumber(0)),
-			new MineralSlot(MineralType.Stone, new BigNumber(100), new BigNumber(0)),
-			new MineralSlot(MineralType.Coal, new BigNumber(300), new BigNumber(0))
+			new MineralSlot(MineralType.Gold, new BigNumber(200), new BigNumber(100)),
+			new MineralSlot(MineralType.Stone, new BigNumber(100), new BigNumber(300)),
+			new MineralSlot(MineralType.Coal, new BigNumber(300), new BigNumber(5000))
 		};
 
 		_map.Clear();

@@ -75,7 +75,16 @@ public class UI_Skill_Button_Base : UI_Base
 	private void UpdateButtonState()
 	{
 		gameObject.SetActive(Managers.Skill.ArePrerequisitesMet(_skillData));
-	
+		if (_skillData.Level == 0)
+		{
+			GetComponent<Image>().sprite = Resources.Load<Sprite>("Art/UI_SkillTree/Rect_Disabled");
+		}
+		else
+		{
+			GetComponent<Image>().sprite = Resources.Load<Sprite>("Art/UI_SkillTree/Rect_Normal");
+		}
+
+
 	}
 
 	public void ClickedButton(PointerEventData data)
