@@ -49,9 +49,24 @@ public class SkillManager
 		};
 		skill3.precedingSkills = new List<int> { 1, 2 };
 
+
+		SkillNodeData skill4 = new SkillNodeData();
+		skill4.Id = 4;
+		skill4.Name = "김재경 빨리하라고";
+		skill4.Level = 0;
+		skill4.Description = "빨리하라고";
+		skill4.SkillCost = new List<(MineralType, BigNumber)>
+		{
+			(MineralType.Gold, new BigNumber(5)),
+			(MineralType.Coal, new BigNumber(5)),
+			(MineralType.Stone, new BigNumber(5))
+		};
+		skill4.precedingSkills = new List<int> { 1, 2 };
+
 		SkillMap.Add(1, skill1);
 		SkillMap.Add(2, skill2);
 		SkillMap.Add(3, skill3);
+		SkillMap.Add(4, skill4);
 	}
 
 	//Todo 스킬 세이브 로드 기능 해줘 순원
