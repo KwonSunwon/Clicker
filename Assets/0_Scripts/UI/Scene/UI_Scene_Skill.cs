@@ -1,54 +1,53 @@
-using System.Security.Cryptography;
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UI_Scene_Skill : UI_Scene
 {
-   enum GameObjects
-	{
-		UI_Main_Scroll_Viewport_Content,
-		UI_Main_Scroll_Viewport
+    enum GameObjects
+    {
+        UI_Main_Scroll_Viewport_Content,
+        UI_Main_Scroll_Viewport
 
-	}
+    }
 
-	public override void Init()
-	{
-		base.Init();
-		Bind<GameObject>(typeof(GameObjects));
-		//Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
-		Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
-	}
+    public override void Init()
+    {
+        base.Init();
+        Bind<GameObject>(typeof(GameObjects));
+        //Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
+        Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(ScrollEvent, Define.UIEvent.Scroll);
+    }
 
-	private RectTransform content;
-	private float zoomSpeed = 0.01f;
-	private float minZoom = 0.5f;
-	private float maxZoom = 2f;
-	private Vector3 targetScale;
-	private float lerpSpeed = 10f; // º¸°£ ¼Óµµ
-	public void ScrollEvent(PointerEventData eventData)
-	{
-		if (eventData.pointerCurrentRaycast.gameObject != null)
-		{
-			Debug.Log("ÇöÀç ·¹ÀÌÄ³½ºÆ® Å¸°Ù: " + eventData.pointerCurrentRaycast.gameObject.name);
-		}
-		if (content == null)
-		{
-			content = Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).GetComponent<RectTransform>();
-		}
+    private RectTransform content;
+    private float zoomSpeed = 0.01f;
+    private float minZoom = 0.5f;
+    private float maxZoom = 2f;
+    private Vector3 targetScale;
+    private float lerpSpeed = 10f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+    public void ScrollEvent(PointerEventData eventData)
+    {
+        if (eventData.pointerCurrentRaycast.gameObject != null)
+        {
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½Æ® Å¸ï¿½ï¿½: " + eventData.pointerCurrentRaycast.gameObject.name);
+        }
+        if (content == null)
+        {
+            content = Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).GetComponent<RectTransform>();
+        }
 
-		float scroll = eventData.scrollDelta.y; // ¸¶¿ì½º ÈÙ ÀÔ·Â
-		if (scroll != 0)
-		{
-			Vector3 scale = content.localScale;
-			scale += Vector3.one * (scroll * zoomSpeed);
-			scale = new Vector3(
-				Mathf.Clamp(scale.x, minZoom, maxZoom),
-				Mathf.Clamp(scale.y, minZoom, maxZoom),
-				1f
-			);
-			content.localScale = scale;
-		}
-	}
+        float scroll = eventData.scrollDelta.y; // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ ï¿½Ô·ï¿½
+        if (scroll != 0)
+        {
+            Vector3 scale = content.localScale;
+            scale += Vector3.one * (scroll * zoomSpeed);
+            scale = new Vector3(
+                Mathf.Clamp(scale.x, minZoom, maxZoom),
+                Mathf.Clamp(scale.y, minZoom, maxZoom),
+                1f
+            );
+            content.localScale = scale;
+        }
+    }
 
-	
+
 }
