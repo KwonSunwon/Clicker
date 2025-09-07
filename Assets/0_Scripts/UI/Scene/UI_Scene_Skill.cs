@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UI_Scene_Skill : UI_Scene
 {
@@ -9,17 +10,30 @@ public class UI_Scene_Skill : UI_Scene
    enum GameObjects
 	{
 		UI_Main_Scroll_Viewport_Content,
-		UI_Main_Scroll_Viewport
+		UI_Main_Scroll_Viewport,
+		UI_Setting_Panel
 
+	}
+	
+	enum Buttons
+	{
+		UI_Setting_Button,
+		UI_Setting_Back_Button
 	}
 
 	public override void Init()
 	{
 		base.Init();
 		Bind<GameObject>(typeof(GameObjects));
+		Bind<Button>(typeof(Buttons));
 		//Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport_Content).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
 		Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
 		Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(GrobalClickEvent, Define.UIEvent.Click);
+		Get<Button>((int)Buttons.UI_Setting_Button).gameObject.BindEvent(ClickedSettingButton, Define.UIEvent.Click);
+		Get<Button>((int)Buttons.UI_Setting_Back_Button).gameObject.BindEvent(ClickedSettingButton, Define.UIEvent.Click);
+		Get<GameObject>((int)GameObjects.UI_Setting_Panel).SetActive(false);
+
+		GlobalClick += CloseSettingButton;
 	}
 
 	private RectTransform content;
@@ -54,4 +68,15 @@ public class UI_Scene_Skill : UI_Scene
 		GlobalClick?.Invoke(eventData);
 	}
 
+	public void ClickedSettingButton(PointerEventData eventData)
+	{
+		var settingPanel = Get<GameObject>((int)GameObjects.UI_Setting_Panel);
+		settingPanel.SetActive(!settingPanel.activeSelf);
+
+	}
+
+	public void CloseSettingButton(PointerEventData eventData)
+	{
+		Get<GameObject>((int)GameObjects.UI_Setting_Panel).SetActive(false);
+	}
 }
