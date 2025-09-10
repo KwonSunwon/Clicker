@@ -7,6 +7,7 @@ public class Coal : OreBase
         base.Init();
         oreType = OreType.Coal;
         _spriteSet = Managers.Resource.Load<OreSpriteSet>("SpriteSets/Coal").sprites;
+        _image.sprite = _spriteSet[_spriteIndex];
     }
 
     public override void OnClick()

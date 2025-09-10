@@ -12,6 +12,11 @@ public class UI_Mine : UI_Base
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
+
+        for (int i = 0; i < 3; i++)
+        {
+            //AddMiningLine();
+        }
     }
 
     public void AddMiningLine()
@@ -19,7 +24,6 @@ public class UI_Mine : UI_Base
         var floors = Get<GameObject>((int)GameObjects.Floors);
         // Add a new mining line prefab
         UI_MiningLine line = Managers.UI.MakeSubItem<UI_MiningLine>(floors.transform);
-        //line.Init();
     }
 
     [ContextMenu("Test_AddMiningLine")]
