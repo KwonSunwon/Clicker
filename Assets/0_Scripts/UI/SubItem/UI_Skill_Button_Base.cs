@@ -23,6 +23,7 @@ public class UI_Skill_Button_Base : UI_Base
 		UI_NodeRight,
 
 		UI_Skill_Image,
+		UI_Skill_Tree_Image
 
 	}
 	enum Buttons
@@ -52,6 +53,9 @@ public class UI_Skill_Button_Base : UI_Base
 		Get<TextMeshProUGUI>((int)Texts.UI_Skill_Name_Text).text = _skillData.Name;
 		Get<TextMeshProUGUI>((int)Texts.UI_Skill_Explain_Text).text = _skillData.Description;
 		Get<TextMeshProUGUI>((int)Texts.UI_Skill_Level_Text).text = $"{_skillData.Level}/{_skillData.MaxLevel}";
+
+		Get<Image>((int)Images.UI_Skill_Image).sprite = Resources.Load<Sprite>($"Art/SkillTree/Skilltree_{_id}");
+		Get<Image>((int)Images.UI_Skill_Tree_Image).sprite = Resources.Load<Sprite>($"Art/SkillTree/Skilltree_{_id}"); 
 
 		GameObject costBundle = Get<GameObject>((int)GameObjects.UI_Cost_Bundle);
 		foreach(var skillCost in _skillData.SkillCost)
