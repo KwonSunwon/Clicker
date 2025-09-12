@@ -47,26 +47,28 @@ public class UI_MineFloors : UI_Base
         _lines = new List<UI_MiningLine>();
         _lines.AddRange(GetComponentsInChildren<UI_MiningLine>());
         int depth = 0;
-        foreach (var line in _lines)
-        {
+        foreach (var line in _lines) {
             line.Depth = depth++;
             line.OnMiningLineCleared -= HandleMiningLineCleared;
             line.OnMiningLineCleared += HandleMiningLineCleared;
         }
+
+        AddFloor();
+        AddFloor();
+
+        _lines[0].IsTopLine = true;
     }
 
     private void HandleMiningLineCleared(UI_MiningLine line)
     {
         //NOTE: 이 경우는 존재하지 않아야함
-        if (line == _lines[^1])
-        {
+        if (line == _lines[^1]) {
             Debug.LogError($"@{line.gameObject.GetInstanceID()} UI_MiningLine is last line");
             return;
         }
         _lines[line.Depth + 1].IsTopLine = true;
 
-        if (_lines[^1].IsTopLine)
-        {
+        if (_lines[^1].IsTopLine) {
             AddFloor();
         }
     }

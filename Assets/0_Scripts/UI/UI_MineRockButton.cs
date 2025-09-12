@@ -11,26 +11,34 @@ public class UI_MineRockButton : UI_MineButtonBase
     public Rock Rock { get { return _rock; } }
 
     private UI_MiningLine _line;
-    public UI_MiningLine Line
-    {
+    public UI_MiningLine Line {
         get { return _line; }
         set { _line = value; }
     }
 
+    private BoxCollider2D _boxCollider;
+
     public override void Init()
     {
-        Debug.Log("UI_MineRockButton Init()");
+        _boxCollider = GetComponent<BoxCollider2D>();
+        _boxCollider.enabled = false;
+
         GetComponent<Image>().color = normalColor;
         _rock = GetComponent<Rock>();
     }
 
+    public void SetTopLine()
+    {
+        _boxCollider.enabled = true;
+    }
+
     protected override void HandlePointerClick()
     {
-        if (Line.IsTopLine == false)
-        {
-            Debug.Log($"@UI_MineButton{gameObject.GetInstanceID()} Clicked but not Top Line");
-            return;
-        }
+        //DISCUSS: 기본으로 콜라이더를 비활성화 하고 Top라인이 되면 그때 활성화 하는 방식으로?
+        //if (Line.IsTopLine == false) {
+        //    Debug.Log($"@UI_MineButton{gameObject.GetInstanceID()} Clicked but not Top Line");
+        //    return;
+        //}
 
         //NOTE: 임시로 캘 때 색상이 변경되도록함
         tempColor += 0.01f;

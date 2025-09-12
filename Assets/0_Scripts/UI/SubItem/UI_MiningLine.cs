@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_MiningLine : UI_Base
 {
@@ -7,29 +8,30 @@ public class UI_MiningLine : UI_Base
 
     //NOTE: 첫 번째 라인은 0
     [SerializeField] private int _depth;
-    public int Depth
-    {
+    public int Depth {
         get { return _depth; }
         set { _depth = value; }
     }
 
     //NOTE: 맨 위 라인인지 여부, 맨 위 라인만 클릭 가능
+    public event Action OnTopLineChanged;
+
     [SerializeField] private bool _isTopLine = false;
-    public bool IsTopLine
-    {
+    public bool IsTopLine {
         get { return _isTopLine; }
-        set { _isTopLine = value; }
+        set {
+            _isTopLine = value;
+            OnTopLineChanged?.Invoke();
+        }
     }
 
     public event Action<UI_MiningLine> OnMiningLineCleared;
 
     private UI_MineRockButton[] _rocks;
     [SerializeField] private int _rockCount;
-    public int RockCount
-    {
+    public int RockCount {
         get { return _rockCount; }
-        set
-        {
+        set {
             _rockCount = value;
             if (_rockCount <= 0)
                 ClearLine();
@@ -38,8 +40,7 @@ public class UI_MiningLine : UI_Base
 
     private void ClearLine()
     {
-        foreach (var rock in _rocks)
-        {
+        foreach (var rock in _rocks) {
             Destroy(rock.gameObject);
         }
         OnMiningLineCleared?.Invoke(this);
@@ -54,8 +55,10 @@ public class UI_MiningLine : UI_Base
 
         _rocks = GetComponentsInChildren<UI_MineRockButton>();
         _rockCount = _rocks.Length;
-        foreach (var rock in _rocks)
+        foreach (var rock in _rocks) {
+            OnTopLineChanged += rock.SetTopLine;
             rock.Line = this;
+        }
 
         RandomVeinSeletor();
     }
@@ -70,8 +73,7 @@ public class UI_MiningLine : UI_Base
         int veinCount = 0;
         int index = 0;
         UI_MineOreVeinButton obj = null;
-        foreach (var rock in _rocks)
-        {
+        foreach (var rock in _rocks) {
             int r = UnityEngine.Random.Range(0, 10);
             if (r < 4) // 40% 확률로 아무것도 없음
             {
@@ -89,8 +91,7 @@ public class UI_MiningLine : UI_Base
                 AddOreVein(OreBase.OreType.Iron, index);
             }
 
-            if (r >= 4)
-            {
+            if (r >= 4) {
                 veinCount++;
                 //obj.transform.SetAsFirstSibling();
                 //obj.transform.localScale = new Vector3(1, 1, 1);
@@ -107,6 +108,8 @@ public class UI_MiningLine : UI_Base
 
     private void AddOreVein(OreBase.OreType type, int index)
     {
+        Transform rock = transform.GetChild(index);
+
         UI_MineOreVeinButton obj = null;
         obj = Managers.UI.MakeSubItem<UI_MineOreVeinButton>(transform);
 
@@ -114,15 +117,30 @@ public class UI_MiningLine : UI_Base
         var targetType = System.Type.GetType(className);
         obj.OreBase = (OreBase)obj.gameObject.AddComponent(targetType);
         obj.transform.SetAsFirstSibling();
+        //obj.transform.SetSiblingIndex(index);
+        //obj.GetComponent<LayoutElement>().ignoreLayout = false;
+        RectTransform rt = obj.GetComponent<RectTransform>();
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+
         obj.transform.localScale = Vector3.one;
 
-        RectTransform rt = obj.GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector3(100 + (200 * index), -100, 0);
-        rt.sizeDelta = new Vector2(200, 200);
+        var pos = rock.GetComponent<RectTransform>().anchoredPosition;
+
+        //rt.anchoredPosition = new Vector3(100 + (200 * index), -100, 0);
+        //var pos = rt.anchoredPosition;
+        rt.anchoredPosition = pos;
+        rt.sizeDelta = new Vector2(100, 100);
 
         obj.PosIndex = index;
-    }
 
+        //obj.GetComponent<LayoutElement>().ignoreLayout = true;
+        rt.position = Vector3.zero;
+        rt.anchoredPosition = pos;
+    }
+    //IDEA: 일단 비활성화 하면 위치 상관없으니까 그렇게 해두고
+    //해당 위치에 Rock을 묶어둔 다음에 그 Rock이 부셔지면 Vein한테 알려줘서 그때 위치 잡도록
     #region Data
     [ContextMenu("세이브 테스트")]
     public MiningLineSaveData MakeSaveData()
@@ -135,12 +153,10 @@ public class UI_MiningLine : UI_Base
         data.RockCount = _rockCount;
         data.IsCleared = (byte)((_rockCount == 0) ? 0 : 1);
         data.IsTop = Convert.ToByte(IsTopLine);
-        for (int i = 0; i < 6; i++)
-        {
+        for (int i = 0; i < 6; i++) {
             data.row[i] = (byte)(_rocks[i].Rock.IsBroken ? 0x80 : 0x00);
         }
-        foreach (UI_MineOreVeinButton vein in veinButtons)
-        {
+        foreach (UI_MineOreVeinButton vein in veinButtons) {
             data.row[vein.PosIndex] |= (byte)((byte)vein.OreBase.Type & 0x7F);
         }
 
@@ -152,8 +168,7 @@ public class UI_MiningLine : UI_Base
         Depth = data.Id;
         _rockCount = data.RockCount;
         IsTopLine = Convert.ToBoolean(data.IsTop);
-        for (int i = 0; i < 6; i++)
-        {
+        for (int i = 0; i < 6; i++) {
             byte b = data.row[i];
             _rocks[i].Rock.IsBroken = Convert.ToBoolean((b & 0x80) != 0);
 
