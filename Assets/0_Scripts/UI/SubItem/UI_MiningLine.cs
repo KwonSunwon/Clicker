@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_MiningLine : UI_Base
 {
@@ -70,77 +70,35 @@ public class UI_MiningLine : UI_Base
     private void RandomVeinSeletor()
     {
         Debug.Log("Make Vein");
-        int veinCount = 0;
-        int index = 0;
-        UI_MineOreVeinButton obj = null;
-        foreach (var rock in _rocks) {
-            int r = UnityEngine.Random.Range(0, 10);
-            if (r < 4) // 40% 확률로 아무것도 없음
-            {
-            }
-            else if (4 < r && r < 8) // 40% 확률로 Coal
-            {
-                //obj = Managers.UI.MakeSubItem<UI_MineOreVeinButton>(transform);
-                //obj.OreBase = obj.AddComponent<Coal>();
-                AddOreVein(OreBase.OreType.Coal, index);
-            }
-            else // 20% 확률로 Iron
-            {
-                //obj = Managers.UI.MakeSubItem<UI_MineOreVeinButton>(transform);
-                //obj.OreBase = obj.AddComponent<Iron>();
-                AddOreVein(OreBase.OreType.Iron, index);
-            }
 
-            if (r >= 4) {
-                veinCount++;
-                //obj.transform.SetAsFirstSibling();
-                //obj.transform.localScale = new Vector3(1, 1, 1);
-                //obj.GetComponent<RectTransform>().anchoredPosition = new Vector3(100 + (200 * index), -100, 0);
-                //obj.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 200);
-                //obj.PosIndex = index;
-            }
+        List<int> veinPositions = new List<int>();
+        int totalVeinCount = UnityEngine.Random.Range(2, 4);
+        int index;
+        for (int i = 0; i < totalVeinCount; i++) {
+            do {
+                index = UnityEngine.Random.Range(0, 14);
+            } while (veinPositions.Contains(index));
+            veinPositions.Add(index);
 
-            if (veinCount >= 2)
-                break;
-            index++;
+            //OreTypeSet.Dict.TryGetValue(Depth / 10, out var oreTypes);
+            //int typeRandom = UnityEngine.Random.Range(0, oreTypes.Count);
+
+            AddOreVein(OreBase.OreType.Coal, index, out UI_MineOreVeinButton vein);
+            _rocks[index].OnMineRockBroken += vein.SetActiveByRock;
         }
     }
 
-    private void AddOreVein(OreBase.OreType type, int index)
+    private void AddOreVein(OreBase.OreType type, int index, out UI_MineOreVeinButton obj)
     {
-        Transform rock = transform.GetChild(index);
-
-        UI_MineOreVeinButton obj = null;
+        obj = null;
         obj = Managers.UI.MakeSubItem<UI_MineOreVeinButton>(transform);
 
         string className = type.ToString();
         var targetType = System.Type.GetType(className);
         obj.OreBase = (OreBase)obj.gameObject.AddComponent(targetType);
         obj.transform.SetAsFirstSibling();
-        //obj.transform.SetSiblingIndex(index);
-        //obj.GetComponent<LayoutElement>().ignoreLayout = false;
-        RectTransform rt = obj.GetComponent<RectTransform>();
-
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-
-        obj.transform.localScale = Vector3.one;
-
-        var pos = rock.GetComponent<RectTransform>().anchoredPosition;
-
-        //rt.anchoredPosition = new Vector3(100 + (200 * index), -100, 0);
-        //var pos = rt.anchoredPosition;
-        rt.anchoredPosition = pos;
-        rt.sizeDelta = new Vector2(100, 100);
-
-        obj.PosIndex = index;
-
-        //obj.GetComponent<LayoutElement>().ignoreLayout = true;
-        rt.position = Vector3.zero;
-        rt.anchoredPosition = pos;
     }
-    //IDEA: 일단 비활성화 하면 위치 상관없으니까 그렇게 해두고
-    //해당 위치에 Rock을 묶어둔 다음에 그 Rock이 부셔지면 Vein한테 알려줘서 그때 위치 잡도록
+
     #region Data
     [ContextMenu("세이브 테스트")]
     public MiningLineSaveData MakeSaveData()
@@ -173,7 +131,7 @@ public class UI_MiningLine : UI_Base
             _rocks[i].Rock.IsBroken = Convert.ToBoolean((b & 0x80) != 0);
 
             OreBase.OreType type = (OreBase.OreType)(b & 0x7F);
-            AddOreVein(type, i);
+            //AddOreVein(type, i);
         }
 
     }

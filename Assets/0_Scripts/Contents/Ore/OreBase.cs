@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -36,4 +37,22 @@ public abstract class OreBase : MonoBehaviour
     }
 
     public abstract void OnClick();
+}
+
+public static class OreTypeSet
+{
+    static Dictionary<int, List<OreBase.OreType>> dict = new Dictionary<int, List<OreBase.OreType>> {
+        {0, d1}, {1, d2}, {2, d3}
+    };
+
+    static OreBase.OreType Coal = OreBase.OreType.Coal;
+    static OreBase.OreType Iron = OreBase.OreType.Iron;
+    static OreBase.OreType Gold = OreBase.OreType.Gold;
+    static OreBase.OreType Diamond = OreBase.OreType.Diamond;
+
+    static List<OreBase.OreType> d1 = new List<OreBase.OreType> { Coal, Iron };
+    static List<OreBase.OreType> d2 = new List<OreBase.OreType> { Iron, Gold };
+    static List<OreBase.OreType> d3 = new List<OreBase.OreType> { Gold, Diamond };
+
+    static public Dictionary<int, List<OreBase.OreType>> Dict { get { return dict; } }
 }

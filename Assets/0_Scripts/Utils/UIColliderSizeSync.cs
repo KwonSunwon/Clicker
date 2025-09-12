@@ -7,7 +7,12 @@ public class UIColliderSizeSync : MonoBehaviour
     private RectTransform _rt;
     private BoxCollider2D _bc;
 
-    void Start()
+    void Awake()
+    {
+        SetSize();
+    }
+
+    public void SetSize()
     {
         _rt = GetComponent<RectTransform>();
         _bc = GetComponent<BoxCollider2D>();

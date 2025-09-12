@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_MineRockButton : UI_MineButtonBase
@@ -18,6 +19,8 @@ public class UI_MineRockButton : UI_MineButtonBase
 
     private BoxCollider2D _boxCollider;
 
+    public event Action<UI_MineRockButton> OnMineRockBroken;
+
     public override void Init()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -34,12 +37,6 @@ public class UI_MineRockButton : UI_MineButtonBase
 
     protected override void HandlePointerClick()
     {
-        //DISCUSS: 기본으로 콜라이더를 비활성화 하고 Top라인이 되면 그때 활성화 하는 방식으로?
-        //if (Line.IsTopLine == false) {
-        //    Debug.Log($"@UI_MineButton{gameObject.GetInstanceID()} Clicked but not Top Line");
-        //    return;
-        //}
-
         //NOTE: 임시로 캘 때 색상이 변경되도록함
         tempColor += 0.01f;
         GetComponent<Image>().color = new Color(normalColor.r, normalColor.g + tempColor, normalColor.b, 1f);
@@ -49,7 +46,9 @@ public class UI_MineRockButton : UI_MineButtonBase
             _rock = gameObject.GetOrAddComponent<Rock>();
         Rock.OnClick();
 
-        if (Rock.IsBroken)
+        if (Rock.IsBroken) {
             Line.RockCount--;
+            OnMineRockBroken?.Invoke(this);
+        }
     }
 }

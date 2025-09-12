@@ -6,15 +6,12 @@
 public class UI_MineOreVeinButton : UI_MineButtonBase
 {
     [SerializeField] private OreBase _oreBase;
-    public OreBase OreBase
-    {
+    public OreBase OreBase {
         get { return _oreBase; }
-        set
-        {
+        set {
             if (_oreBase)
                 Debug.LogError("OreBase is already set!");
-            else
-            {
+            else {
                 _oreBase = value;
                 _oreBase.Init();
             }
@@ -23,15 +20,28 @@ public class UI_MineOreVeinButton : UI_MineButtonBase
 
     //NOTE: MiningLine에서 광맥의 위치 인덱스
     private int _posIndex;
-    public int PosIndex
-    {
+    public int PosIndex {
         get { return _posIndex; }
         set { _posIndex = value; }
     }
 
     public override void Init()
     {
+        gameObject.SetActive(false);
+    }
 
+    public void SetActiveByRock(UI_MineRockButton rock)
+    {
+        gameObject.SetActive(true);
+
+        transform.position = Vector3.zero;
+        transform.localScale = Vector3.one;
+        var rockRT = rock.GetComponent<RectTransform>();
+        var oreRT = GetComponent<RectTransform>();
+        oreRT.sizeDelta = rockRT.sizeDelta;
+        oreRT.anchoredPosition = rockRT.anchoredPosition;
+
+        GetComponent<UIColliderSizeSync>().SetSize();
     }
 
     protected override void HandlePointerClick()
