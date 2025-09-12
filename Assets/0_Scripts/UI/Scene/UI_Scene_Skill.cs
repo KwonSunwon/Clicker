@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UI_Scene_Skill : UI_Scene
 {
 	static public event Action<PointerEventData> GlobalClick;
-   enum GameObjects
+	enum GameObjects
 	{
 		UI_Main_Scroll_Viewport_Content,
 		UI_Main_Scroll_Viewport,

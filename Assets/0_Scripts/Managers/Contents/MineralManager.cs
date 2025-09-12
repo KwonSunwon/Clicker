@@ -45,7 +45,7 @@ public class MineralManager
 	//Test 코드(엄장헌) 1.0f로 바꿀예정
 	private float tickInterval = 0.01f;
 
-
+	int reincarnationCoin = 100;
 
 	public void Init()
 	{
@@ -114,6 +114,13 @@ public class MineralManager
 		return true;
 	}
 
+	public bool Spend(int cost)
+	{
+		if (reincarnationCoin - cost < 0) return false;
+		reincarnationCoin -= cost;
+		return true;
+	}
+
 	public bool CanAfford(MineralType type, BigNumber cost)
 	{
 		return _map[type].Amount.CompareTo(cost) >= 0;
@@ -143,5 +150,6 @@ public class MineralManager
 		return _map[type];
 	}
 	#endregion
-
+	
+	public int ReincarnationCoin { get { return reincarnationCoin; }}
 }
