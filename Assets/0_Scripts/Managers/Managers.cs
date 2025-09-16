@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
@@ -12,8 +12,8 @@ public class Managers : MonoBehaviour
 
     public static GameManagerEx Game { get { return Instance._game; } }
     public static AchievementManager Achievement { get { return Instance._achievement; } }
-    public static MineralManager Mineral {  get { return Instance._mineralManager; } }
-	#endregion
+    public static MineralManager Mineral { get { return Instance._mineralManager; } }
+    #endregion
 
     #region Core
     DataManager _data = new DataManager();
@@ -48,11 +48,9 @@ public class Managers : MonoBehaviour
 
     static void Init()
     {
-        if (s_instance == null)
-        {
+        if (s_instance == null) {
             GameObject go = GameObject.Find("@Managers");
-            if (go == null)
-            {
+            if (go == null) {
                 go = new GameObject { name = "@Managers" };
                 go.AddComponent<Managers>();
             }
@@ -66,9 +64,6 @@ public class Managers : MonoBehaviour
             s_instance._setting.Load();
             s_instance._mineralManager.Init();
             s_instance._mineralManager.TickLoop();
-        }		
-	}
-
             s_instance._achievement.Init();
         }
     }
