@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,14 +13,14 @@ public class UI_Scene_Skill : UI_Scene
 	{
 		UI_Main_Scroll_Viewport_Content,
 		UI_Main_Scroll_Viewport,
-		UI_Setting_Panel
+		//UI_Setting_Panel
 
 	}
 	
 	enum Buttons
 	{
 		UI_Setting_Button,
-		UI_Setting_Back_Button
+		//UI_Setting_Back_Button
 	}
 
 	public override void Init()
@@ -31,8 +32,8 @@ public class UI_Scene_Skill : UI_Scene
 		Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(ScrollEvent,Define.UIEvent.Scroll);
 		Get<GameObject>((int)GameObjects.UI_Main_Scroll_Viewport).BindEvent(GrobalClickEvent, Define.UIEvent.Click);
 		Get<Button>((int)Buttons.UI_Setting_Button).gameObject.BindEvent(ClickedSettingButton, Define.UIEvent.Click);
-		Get<Button>((int)Buttons.UI_Setting_Back_Button).gameObject.BindEvent(ClickedSettingButton, Define.UIEvent.Click);
-		Get<GameObject>((int)GameObjects.UI_Setting_Panel).SetActive(false);
+		//Get<Button>((int)Buttons.UI_Setting_Back_Button).gameObject.BindEvent(ClickedSettingButton, Define.UIEvent.Click);
+		//Get<GameObject>((int)GameObjects.UI_Setting_Panel).SetActive(false);
 
 		GlobalClick += CloseSettingButton;
 	}
@@ -71,46 +72,21 @@ public class UI_Scene_Skill : UI_Scene
 
 	public void ClickedSettingButton(PointerEventData eventData)
 	{
-		var panel = Get<GameObject>((int)GameObjects.UI_Setting_Panel);
-
-		bool isActive = panel.activeSelf;
-
-		if (!isActive) // 켤 때
-		{
-			panel.SetActive(true);
-			// DOTween 초기화
-			panel.transform.localScale = Vector3.zero;
-
-			// 1초 동안 0 -> 1 스케일 업
-			panel.transform.DOScale(Vector3.one, 1f)
-				.SetEase(Ease.OutBack); // 부드럽게 튀어나오는 느낌
-		}
-		else // 끌 때
-		{
-			// 꺼질 때 애니메이션도 넣고 싶으면 여기
-			panel.transform.DOScale(Vector3.zero, 0.5f)
-				.SetEase(Ease.InBack)
-				.OnComplete(() => panel.SetActive(false));
-		}
-
-		//UI_Scene_Skill.GrobalClickEvent(eventData);
-
+		var panel = FindFirstObjectByType<UI_Setting_Panel>();
+		if (panel == null) 
+			Managers.Resource.Instantiate("UI/Popup/UI_Setting_Panel", transform);	
+		else panel.Close();
+			
 	}
 
 	public void CloseSettingButton(PointerEventData eventData)
 	{
+		var panel = FindFirstObjectByType<UI_Setting_Panel>();
+		if (panel == null) return;
 
-		if (!Get<GameObject>((int)GameObjects.UI_Setting_Panel).activeSelf) return;
-		//Debug.Log(data.pointerClick.name);
 		if (eventData.pointerClick.gameObject != gameObject)
 		{
-			var panel = Get<GameObject>((int)GameObjects.UI_Setting_Panel);
-			panel.transform.DOScale(Vector3.zero, 0.5f)
-				.SetEase(Ease.InBack)
-				.OnComplete(() => panel.SetActive(false));
-			//Get<GameObject>((int)GameObjects.UI_Skill_Explain_Panel).SetActive(false);
+			panel.Close();
 		}
-
-
 	}
 }
