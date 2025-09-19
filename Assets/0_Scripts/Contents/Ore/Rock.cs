@@ -8,16 +8,13 @@ using UnityEngine.UI;
 /// </summary>
 public class Rock : MonoBehaviour
 {
-    private int _hp;
+    public int _hp;
     private bool _isBroken = false;
-    public bool IsBroken
-    {
+    public bool IsBroken {
         get { return _isBroken; }
-        set
-        {
+        set {
             _isBroken = value;
-            if (_isBroken == false)
-            {
+            if (_isBroken == false) {
                 Init();
             }
         }
@@ -40,8 +37,7 @@ public class Rock : MonoBehaviour
     {
         Debug.Log($"Rock {gameObject.GetInstanceID()} Clicked");
         _hp--;
-        if (_hp <= 0)
-        {
+        if (_hp <= 0) {
             GetComponent<Image>().enabled = false;
             GetComponent<Collider2D>().enabled = false;
             _isBroken = true;

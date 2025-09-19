@@ -27,7 +27,7 @@ public class UI_MiningLine : UI_Base
 
     public event Action<UI_MiningLine> OnMiningLineCleared;
 
-    private UI_MineRockButton[] _rocks;
+    public UI_MineRockButton[] _rocks;
     [SerializeField] private int _rockCount;
     public int RockCount {
         get { return _rockCount; }
@@ -37,6 +37,8 @@ public class UI_MiningLine : UI_Base
                 ClearLine();
         }
     }
+
+    public List<UI_MineOreVeinButton> _oreVeins;
 
     private void ClearLine()
     {
@@ -49,6 +51,13 @@ public class UI_MiningLine : UI_Base
         OnMiningLineCleared = null;
     }
 
+    private void RockBroken(UI_MineRockButton rock)
+    {
+        _rockCount--;
+        if (_rockCount <= 0)
+            ClearLine();
+    }
+
     public override void Init()
     {
         _depth = LineDepthIndex++;
@@ -57,8 +66,11 @@ public class UI_MiningLine : UI_Base
         _rockCount = _rocks.Length;
         foreach (var rock in _rocks) {
             OnTopLineChanged += rock.SetTopLine;
-            rock.Line = this;
+            //rock.Line = this;
+            rock.OnMineRockBroken += RockBroken;
         }
+
+        _oreVeins = new List<UI_MineOreVeinButton>();
 
         RandomVeinSeletor();
     }
@@ -85,6 +97,7 @@ public class UI_MiningLine : UI_Base
 
             AddOreVein(OreBase.OreType.Coal, index, out UI_MineOreVeinButton vein);
             _rocks[index].OnMineRockBroken += vein.SetActiveByRock;
+            _oreVeins.Add(vein);
         }
     }
 
