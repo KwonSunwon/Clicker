@@ -11,12 +11,6 @@ public class UI_MineRockButton : UI_MineButtonBase
     private Rock _rock;
     public Rock Rock { get { return _rock; } }
 
-    //private UI_MiningLine _line;
-    //public UI_MiningLine Line {
-    //    get { return _line; }
-    //    set { _line = value; }
-    //}
-
     private BoxCollider2D _boxCollider;
 
     public event Action<UI_MineRockButton> OnMineRockBroken;
@@ -46,9 +40,7 @@ public class UI_MineRockButton : UI_MineButtonBase
             _rock = gameObject.GetOrAddComponent<Rock>();
         Rock.OnClick();
 
-        if (Rock.IsBroken) {
-            //Line.RockCount--;
+        if (Rock.IsBroken)
             OnMineRockBroken?.Invoke(this);
-        }
     }
 }

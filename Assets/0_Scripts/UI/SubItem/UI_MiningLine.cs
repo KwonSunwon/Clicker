@@ -31,11 +31,6 @@ public class UI_MiningLine : UI_Base
     [SerializeField] private int _rockCount;
     public int RockCount {
         get { return _rockCount; }
-        set {
-            _rockCount = value;
-            if (_rockCount <= 0)
-                ClearLine();
-        }
     }
 
     public List<UI_MineOreVeinButton> _oreVeins;
@@ -66,7 +61,6 @@ public class UI_MiningLine : UI_Base
         _rockCount = _rocks.Length;
         foreach (var rock in _rocks) {
             OnTopLineChanged += rock.SetTopLine;
-            //rock.Line = this;
             rock.OnMineRockBroken += RockBroken;
         }
 
