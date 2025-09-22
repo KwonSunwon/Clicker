@@ -17,10 +17,10 @@ public class UI_Skill_Button_Base : UI_Base
 	}
 	enum Images
 	{
-		UI_NodeUp,
-		UI_NodeDown,
-		UI_NodeLeft,
-		UI_NodeRight,
+		//UI_NodeUp,
+		//UI_NodeDown,
+		//UI_NodeLeft,
+		//UI_NodeRight,
 
 		UI_Skill_Image,
 		UI_Skill_Tree_Image
@@ -99,6 +99,7 @@ public class UI_Skill_Button_Base : UI_Base
 		
 		if (!isActive) // 켤 때
 		{
+			transform.SetAsLastSibling();
 			panel.SetActive(true);
 			// DOTween 초기화
 			panel.transform.localScale = Vector3.zero;

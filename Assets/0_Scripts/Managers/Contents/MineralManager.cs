@@ -10,9 +10,31 @@ using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 [Serializable]
 public enum MineralType
 {
-	Gold,
-	Stone,
+	IronOre,
+	CopperOre,
 	Coal,
+	GoldNugget,
+	Salt,
+	Bauxite,
+	Lithium,
+	Diamond,
+	Ruby,
+	Sapphire,
+	Emerald,
+	Quartz,
+	Uranium,
+	XenonCrystal,
+	GammaStone,
+	QuantumFlux,
+	VoidCrystal,
+	DarkMatterShard,
+	StellarIron,
+	NebulaDust,
+	CosmicGlass,
+	NeutroniumOre,
+	AlienAlloy,
+
+
 	MaxNum
 	// 필요시 계속 추가 가능
 }
@@ -49,12 +71,23 @@ public class MineralManager
 
 	public void Init()
 	{
-		//Todo 세이브 데이터에서 값을 불러와서 연동할 예정
+		//Todo: 세이브 데이터에서 값을 불러와서 연동할 예정
 		var slots = new List<MineralSlot>
 		{
-			new MineralSlot(MineralType.Gold, new BigNumber(200), new BigNumber(100)),
-			new MineralSlot(MineralType.Stone, new BigNumber(100), new BigNumber(300)),
-			new MineralSlot(MineralType.Coal, new BigNumber(300), new BigNumber(5000))
+			new MineralSlot((MineralType)0, new BigNumber(200), new BigNumber(1000000000)),
+			new MineralSlot((MineralType)1, new BigNumber(100), new BigNumber(100000000)),
+			new MineralSlot((MineralType)2, new BigNumber(300), new BigNumber(10000000)),
+			new MineralSlot((MineralType)3, new BigNumber(300), new BigNumber(1000000)),
+			new MineralSlot((MineralType)4, new BigNumber(300), new BigNumber(100000)),
+			new MineralSlot((MineralType)5, new BigNumber(300), new BigNumber(10000)),
+			new MineralSlot((MineralType)6, new BigNumber(300), new BigNumber(5000)),
+			new MineralSlot((MineralType)7, new BigNumber(300), new BigNumber(4000)),
+			new MineralSlot((MineralType)8, new BigNumber(300), new BigNumber(2000)),
+			new MineralSlot((MineralType)9, new BigNumber(300), new BigNumber(1000)),
+			new MineralSlot((MineralType)10, new BigNumber(300), new BigNumber(500)),
+			new MineralSlot((MineralType)11, new BigNumber(300), new BigNumber(300)),
+			new MineralSlot((MineralType)12, new BigNumber(300), new BigNumber(100)),
+			new MineralSlot((MineralType)13, new BigNumber(300), new BigNumber(1)),
 		};
 
 		_map.Clear();
@@ -147,7 +180,8 @@ public class MineralManager
 
 	public MineralSlot GetSlot(MineralType type)
 	{
-		return _map[type];
+		if (_map.ContainsKey(type)) return _map[type];
+		else return null;
 	}
 	#endregion
 	

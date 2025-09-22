@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UI_MineralBundle : UI_Base
 {
@@ -8,6 +8,7 @@ public class UI_MineralBundle : UI_Base
 		{
 			UI_MineralPanel mineralPanel = Managers.UI.MakeSubItem<UI_MineralPanel>(transform);
 			MineralSlot slot = Managers.Mineral.GetSlot((MineralType)i);
+			if (slot == null) { Managers.Resource.Destroy(mineralPanel.gameObject);  return; }
 			slot.Text = mineralPanel.GetMineralText();
 			Managers.Mineral.UpdateUIText(slot, 2);
 		}
