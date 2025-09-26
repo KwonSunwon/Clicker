@@ -38,10 +38,15 @@ public class Rock : MonoBehaviour
         Debug.Log($"Rock {gameObject.GetInstanceID()} Clicked");
         _hp--;
         if (_hp <= 0) {
-            GetComponent<Image>().enabled = false;
-            GetComponent<Collider2D>().enabled = false;
-            _isBroken = true;
+            Break();
         }
+    }
+
+    public void Break()
+    {
+        GetComponent<Image>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        _isBroken = true;
     }
 }
 

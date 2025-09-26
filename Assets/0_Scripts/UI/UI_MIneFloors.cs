@@ -6,11 +6,11 @@ using UnityEngine;
 //     - Sky
 //     - Ground
 //     - MiningLine: 버튼(바위)을 구성하고 광맥을 생성하는 기능, 바위가 다 사라지면 바위를 파괴하고 광맥만 유지, 아래 줄에 Line이 들어나도록 함
-//         - MineButton * 6
+//         - MineButton 
 //         - OreVein
 //     - ...
 //     - MiningLine
-//         - MineButton * 6
+//         - MineButton
 //         - OreVein
 //     - Dark: 가장 아래에 위치, MiningLine이 추가될 때마다 위로 올라감
 
@@ -70,6 +70,7 @@ public class UI_MineFloors : UI_Base
 
         if (_lines[^1].IsTopLine) {
             AddFloor();
+            _lines[^1].RandomVeinSeletor();
         }
     }
 
@@ -85,5 +86,35 @@ public class UI_MineFloors : UI_Base
         line.Depth = _lines.Count + 1;
         line.OnMiningLineCleared += HandleMiningLineCleared;
         _lines.Add(line);
+    }
+
+    MineDataManager _dataManager = new MineDataManager();
+    [ContextMenu("Test_Load")]
+    public void Load()
+    {
+        Clear();
+        _dataManager.Load(0);
+
+        MineData md = _dataManager.MineData;
+
+        if (md == null || md.Lines == null || md.Lines.Count == 0) {
+            Debug.LogWarning("No MineData to load");
+            return;
+        }
+
+        foreach (var line in md.Lines) {
+            AddFloor();
+            _lines[^1].OnMiningLineCleared -= HandleMiningLineCleared;
+            _lines[^1].Load(line);
+        }
+    }
+
+    private void Clear()
+    {
+        foreach (var line in _lines) {
+            if (line != null)
+                Destroy(line.gameObject);
+        }
+        _lines.Clear();
     }
 }

@@ -53,10 +53,9 @@ public class UI_MiningLine : UI_Base
             ClearLine();
     }
 
-    public override void Init()
+    public void Awake()
     {
         _depth = LineDepthIndex++;
-
         _rocks = GetComponentsInChildren<UI_MineRockButton>();
         _rockCount = _rocks.Length;
         foreach (var rock in _rocks) {
@@ -65,15 +64,20 @@ public class UI_MiningLine : UI_Base
         }
 
         _oreVeins = new List<UI_MineOreVeinButton>();
+    }
 
-        RandomVeinSeletor();
+    public override void Init()
+    {
+        //_depth = LineDepthIndex++;
+
+        //RandomVeinSeletor();
     }
 
     /// <summary>
     /// 라인 랜덤한 위치에 광맥을 생성
     /// 깊이 정보에 따라서 생성되는 광맥의 종류와 개수가 달라짐
     /// </summary>
-    private void RandomVeinSeletor()
+    public void RandomVeinSeletor()
     {
         Debug.Log("Make Vein");
 
@@ -90,8 +94,8 @@ public class UI_MiningLine : UI_Base
             //int typeRandom = UnityEngine.Random.Range(0, oreTypes.Count);
 
             AddOreVein(OreBase.OreType.Coal, index, out UI_MineOreVeinButton vein);
-            _rocks[index].OnMineRockBroken += vein.SetActiveByRock;
-            _oreVeins.Add(vein);
+            //_rocks[index].OnMineRockBroken += vein.SetActiveByRock;
+            //_oreVeins.Add(vein);
         }
     }
 
@@ -104,9 +108,44 @@ public class UI_MiningLine : UI_Base
         var targetType = System.Type.GetType(className);
         obj.OreBase = (OreBase)obj.gameObject.AddComponent(targetType);
         obj.transform.SetAsFirstSibling();
+        _rocks[index].OnMineRockBroken += obj.SetActiveByRock;
+        _oreVeins.Add(obj);
     }
 
     #region Data
+    public void Load(LineData ld)
+    {
+        Depth = ld.LineId;
+        IsTopLine = ld.IsTopLine;
+
+        foreach (var vein in ld.Veins) {
+            AddOreVein((OreBase.OreType)vein.Type, vein.Index, out UI_MineOreVeinButton veinObj);
+        }
+
+        if (!ld.IsCleared) {
+            for (int i = 0; i < ld.Rocks.Count; i++) {
+                if (IsTopLine)
+                    _rocks[i].SetTopLine();
+                _rocks[i].Rock._hp = ld.Rocks[i].Hp;
+                if (ld.Rocks[i].IsBroken)
+                    _rocks[i].Break();
+            }
+        }
+        else {
+            _rockCount = 0;
+            foreach (var r in _rocks)
+                r.Break();
+            //OnMiningLineCleared = null;
+            ClearLine();
+        }
+    }
+    //FIXME: Vein 활성화 안됨, Rock BoxCollider 활성화 안됨
+    // 일단 SetActiveByRock 이 호출은 됨, 그 후에 Init 이 Start 에서 호출되면서 다시 비활성화됨
+    // -> Awake 에서 Init 작업을 하도록 변경해서 해결
+    // vein 에서 SetActiveByRock 을 진행할 때 rock 의 anchoredPosition 도 0, 0 으로 나옴
+    // 위치가 이상하게 잡히는 문제 해결해야됨
+    // -> Rock들이 Awake까지는 호출되는데 anchoredPosition 이 정상적으로 잡히지 않음
+
     [ContextMenu("세이브 테스트")]
     public MiningLineSaveData MakeSaveData()
     {
