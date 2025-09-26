@@ -15,17 +15,22 @@ public class UI_MineRockButton : UI_MineButtonBase
 
     public event Action<UI_MineRockButton> OnMineRockBroken;
 
-    public override void Init()
+    public void Awake()
     {
+        _rock ??= gameObject.GetOrAddComponent<Rock>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _boxCollider.enabled = false;
+    }
 
+    public override void Init()
+    {
         GetComponent<Image>().color = normalColor;
-        _rock = GetComponent<Rock>();
+        _rock ??= GetComponent<Rock>();
     }
 
     public void SetTopLine()
     {
+        _boxCollider ??= GetComponent<BoxCollider2D>();
         _boxCollider.enabled = true;
     }
 
@@ -37,10 +42,17 @@ public class UI_MineRockButton : UI_MineButtonBase
         Debug.Log($"@UI_MineButton{gameObject.GetInstanceID()} Clicked\nColor: {GetComponent<Image>().color}");
 
         if (!Rock)
-            _rock = gameObject.GetOrAddComponent<Rock>();
+            _rock ??= gameObject.GetOrAddComponent<Rock>();
         Rock.OnClick();
 
-        if (Rock.IsBroken)
-            OnMineRockBroken?.Invoke(this);
+        if (Rock.IsBroken) {
+            Break();
+        }
+    }
+
+    public void Break()
+    {
+        Rock.Break();
+        OnMineRockBroken?.Invoke(this);
     }
 }

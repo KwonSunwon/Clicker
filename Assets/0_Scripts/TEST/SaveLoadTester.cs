@@ -1,4 +1,4 @@
-// SaveLoadTester.cs
+﻿// SaveLoadTester.cs
 using UnityEngine;
 
 public class SaveLoadTester : MonoBehaviour
@@ -9,7 +9,7 @@ public class SaveLoadTester : MonoBehaviour
     void Start()
     {
         // 게임 시작 시 자동으로 데이터를 불러옴
-        currentPlayerData = dataManager.Load();
+        currentPlayerData = dataManager.Load() as PlayerData;
         PrintCurrentData("게임 시작 시 불러온 데이터");
     }
 
@@ -36,7 +36,7 @@ public class SaveLoadTester : MonoBehaviour
     void TestLoad()
     {
         Debug.Log("--- 테스트 불러오기 시작 ---");
-        currentPlayerData = dataManager.Load();
+        currentPlayerData = dataManager.Load() as PlayerData;
         PrintCurrentData("파일에서 불러온 데이터");
     }
 
@@ -52,8 +52,7 @@ public class SaveLoadTester : MonoBehaviour
     // 현재 데이터를 콘솔에 출력하는 도우미 함수
     private void PrintCurrentData(string title)
     {
-        if (currentPlayerData == null)
-        {
+        if (currentPlayerData == null) {
             Debug.LogWarning($"[{title}] 현재 데이터가 없습니다.");
             return;
         }

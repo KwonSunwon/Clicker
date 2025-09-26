@@ -1,9 +1,9 @@
-// PlayerData.cs
+﻿// PlayerData.cs
 using System.Collections.Generic;
 
 // 이 클래스는 JsonUtility로 변환할 수 있도록 [System.Serializable]을 붙여줍니다.
 [System.Serializable]
-public class PlayerData
+public class PlayerData : ISaveable
 {
     // BigInteger는 직접 Json으로 변환되지 않으므로 string으로 저장합니다.
     //public string goldString;
