@@ -106,7 +106,7 @@ public class UI_MineFloors : UI_Base
 
         foreach (var line in md.Lines) {
             AddFloor();
-            _lines[^1].OnMiningLineCleared -= HandleMiningLineCleared;
+            _lines[^1].OnMiningLineCleared += HandleMiningLineCleared;
             _lines[^1].Load(line);
         }
     }
