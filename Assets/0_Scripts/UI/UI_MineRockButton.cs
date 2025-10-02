@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_MineRockButton : UI_MineButtonBase
 {
@@ -18,28 +17,28 @@ public class UI_MineRockButton : UI_MineButtonBase
     public void Awake()
     {
         _rock ??= gameObject.GetOrAddComponent<Rock>();
-        _boxCollider = GetComponent<BoxCollider2D>();
+        _boxCollider ??= GetComponent<BoxCollider2D>();
         _boxCollider.enabled = false;
     }
 
     public override void Init()
     {
-        GetComponent<Image>().color = normalColor;
+        //GetComponent<Image>().color = normalColor;
         _rock ??= GetComponent<Rock>();
     }
 
-    public void SetTopLine()
+    public void SetTopLine(bool isTop = true)
     {
         _boxCollider ??= GetComponent<BoxCollider2D>();
-        _boxCollider.enabled = true;
+        _boxCollider.enabled = isTop;
     }
 
     protected override void HandlePointerClick()
     {
         //NOTE: 임시로 캘 때 색상이 변경되도록함
-        tempColor += 0.01f;
-        GetComponent<Image>().color = new Color(normalColor.r, normalColor.g + tempColor, normalColor.b, 1f);
-        Debug.Log($"@UI_MineButton{gameObject.GetInstanceID()} Clicked\nColor: {GetComponent<Image>().color}");
+        //tempColor += 0.01f;
+        //GetComponent<Image>().color = new Color(normalColor.r, normalColor.g + tempColor, normalColor.b, 1f);
+        //Debug.Log($"@UI_MineButton{gameObject.GetInstanceID()} Clicked\nColor: {GetComponent<Image>().color}");
 
         if (!Rock)
             _rock ??= gameObject.GetOrAddComponent<Rock>();

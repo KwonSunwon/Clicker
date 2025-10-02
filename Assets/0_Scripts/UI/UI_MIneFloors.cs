@@ -53,8 +53,9 @@ public class UI_MineFloors : UI_Base
             line.OnMiningLineCleared += HandleMiningLineCleared;
         }
 
-        AddFloor();
-        AddFloor();
+        _lines[0].RandomVeinSeletor();
+        AddFloor().RandomVeinSeletor();
+        AddFloor().RandomVeinSeletor();
 
         _lines[0].IsTopLine = true;
     }
@@ -75,7 +76,7 @@ public class UI_MineFloors : UI_Base
     }
 
     [ContextMenu("Test_AddFloor")]
-    public void AddFloor()
+    public UI_MiningLine AddFloor()
     {
         var floors = GetObject((int)GameObjects.Floors);
         //NOTE: MiningLine prefab 추가
@@ -86,6 +87,7 @@ public class UI_MineFloors : UI_Base
         line.Depth = _lines.Count + 1;
         line.OnMiningLineCleared += HandleMiningLineCleared;
         _lines.Add(line);
+        return line;
     }
 
     MineDataManager _dataManager = new MineDataManager();

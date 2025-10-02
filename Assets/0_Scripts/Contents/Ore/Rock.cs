@@ -20,6 +20,8 @@ public class Rock : MonoBehaviour
         }
     }
 
+    [SerializeField] private OreSpriteSet _spriteSet;
+
     public void Start()
     {
         Init();
@@ -29,14 +31,18 @@ public class Rock : MonoBehaviour
     {
         //TODO: 라인의 깊이 정보를 가져와 단단함(hp)을 설정
         //TODO: 바위의 스프라이트 설정
-        _hp = 2;
+        _hp = 6;
         _isBroken = false;
+
+        GetComponent<Image>().sprite = _spriteSet.sprites[0];
     }
 
     public void OnClick()
     {
         Debug.Log($"Rock {gameObject.GetInstanceID()} Clicked");
-        _hp--;
+        --_hp;
+        if (_hp < 6)
+            GetComponent<Image>().sprite = _spriteSet.sprites[_hp];
         if (_hp <= 0) {
             Break();
         }

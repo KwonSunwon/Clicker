@@ -14,14 +14,14 @@ public class UI_MiningLine : UI_Base
     }
 
     //NOTE: 맨 위 라인인지 여부, 맨 위 라인만 클릭 가능
-    public event Action OnTopLineChanged;
+    public event Action<bool> OnTopLineChanged;
 
     [SerializeField] private bool _isTopLine = false;
     public bool IsTopLine {
         get { return _isTopLine; }
         set {
             _isTopLine = value;
-            OnTopLineChanged?.Invoke();
+            OnTopLineChanged?.Invoke(true);
         }
     }
 
@@ -126,11 +126,13 @@ public class UI_MiningLine : UI_Base
 
         if (!ld.IsCleared) {
             for (int i = 0; i < ld.Rocks.Count; i++) {
-                if (IsTopLine)
-                    _rocks[i].SetTopLine();
                 _rocks[i].Rock._hp = ld.Rocks[i].Hp;
-                if (ld.Rocks[i].IsBroken)
-                    _rocks[i].Break();
+
+                _rocks[i].SetTopLine(IsTopLine);
+
+                if (IsTopLine)
+                    if (ld.Rocks[i].IsBroken)
+                        _rocks[i].Break();
             }
         }
         else {
