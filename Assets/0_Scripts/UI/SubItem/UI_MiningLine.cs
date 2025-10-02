@@ -115,6 +115,8 @@ public class UI_MiningLine : UI_Base
     #region Data
     public void Load(LineData ld)
     {
+        Canvas.ForceUpdateCanvases();
+
         Depth = ld.LineId;
         IsTopLine = ld.IsTopLine;
 
@@ -145,6 +147,9 @@ public class UI_MiningLine : UI_Base
     // vein 에서 SetActiveByRock 을 진행할 때 rock 의 anchoredPosition 도 0, 0 으로 나옴
     // 위치가 이상하게 잡히는 문제 해결해야됨
     // -> Rock들이 Awake까지는 호출되는데 anchoredPosition 이 정상적으로 잡히지 않음
+    // => 아,씹, 진짜 Canvas.ForceUpdateCanvases()로 강제로 갱신하거나, 한 프레임 뒤에 처리해야
+    //   RectTransform 정보가 제대로 갱신되어 있음
+    // -> 다른 버그 맨 위 아니어도 부셔지고, 맨 아래를 다 부셨을 때 아래 라인이 생기지 않음
 
     [ContextMenu("세이브 테스트")]
     public MiningLineSaveData MakeSaveData()

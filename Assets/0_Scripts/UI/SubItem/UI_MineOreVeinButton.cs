@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 광맥의 Button 기능을 담당, 위치 조정이나 이펙트, 효과음 등 데이터 외적인 기능
@@ -36,9 +35,9 @@ public class UI_MineOreVeinButton : UI_MineButtonBase
         //gameObject.SetActive(false);
     }
 
-    public IEnumerator Temp(UI_MineRockButton rock)
+    public void SetActiveByRock(UI_MineRockButton rock)
     {
-        yield return null;
+        gameObject.SetActive(true);
 
         transform.position = Vector3.zero;
         transform.localScale = Vector3.one;
@@ -48,24 +47,6 @@ public class UI_MineOreVeinButton : UI_MineButtonBase
         oreRT.anchoredPosition = rockRT.anchoredPosition;
 
         GetComponent<UIColliderSizeSync>().SetSize();
-    }
-
-    public void SetActiveByRock(UI_MineRockButton rock)
-    {
-        gameObject.SetActive(true);
-
-        StartCoroutine(Temp(rock));
-
-        //gameObject.SetActive(true);
-
-        //transform.position = Vector3.zero;
-        //transform.localScale = Vector3.one;
-        //var rockRT = rock.GetComponent<RectTransform>();
-        //var oreRT = GetComponent<RectTransform>();
-        //oreRT.sizeDelta = rockRT.sizeDelta;
-        //oreRT.anchoredPosition = rockRT.anchoredPosition;
-
-        //GetComponent<UIColliderSizeSync>().SetSize();
     }
 
     protected override void HandlePointerClick()
