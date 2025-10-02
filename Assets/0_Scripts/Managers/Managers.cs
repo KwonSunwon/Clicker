@@ -11,17 +11,11 @@ public class Managers : MonoBehaviour
     MineralManager _mineralManager = new MineralManager();
     SkillManager _skillManager = new SkillManager();
 
-<<<<<<< HEAD
     public static GameManagerEx Game { get { return Instance._game; } }
-    public static AchievementManager Achievement { get { return Instance._achievement; } }
     public static MineralManager Mineral { get { return Instance._mineralManager; } }
-    #endregion
-=======
-    public static GameManagerEx Game {  get { return Instance._game; } }
-    public static MineralManager Mineral {  get { return Instance._mineralManager; } }
     public static SkillManager Skill { get { return Instance._skillManager; } }
-	#endregion
->>>>>>> origin/resource
+    public static AchievementManager Achievement { get { return Instance._achievement; } }
+    #endregion
 
     #region Core
     DataManager _data = new DataManager();
@@ -73,15 +67,10 @@ public class Managers : MonoBehaviour
             s_instance._setting.Load();
             s_instance._mineralManager.Init();
             s_instance._mineralManager.TickLoop();
-<<<<<<< HEAD
+            s_instance._skillManager.Init();
             s_instance._achievement.Init();
         }
     }
-=======
-            s_instance._skillManager.Init();
-        }		
-	}
->>>>>>> origin/resource
 
     public static void Clear()
     {
