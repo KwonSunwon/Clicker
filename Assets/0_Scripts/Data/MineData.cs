@@ -13,7 +13,7 @@ public class MineDataManager
     /// 현재 Mine의 모든 상태를 한 번에 저장
     /// 수동 세이브 시 사용
     /// </summary>
-    public void SaveAll(UI_MineFloors mine)
+    public void SaveAll(UI_Mine mine)
     {
         if (mine == null) {
             Debug.LogError("Mine is null!");

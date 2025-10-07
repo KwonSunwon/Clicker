@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8151265315447373420}
   - component: {fileID: 596676954955680686}
   - component: {fileID: 4184691121554980653}
+  - component: {fileID: 3000795003959662625}
   m_Layer: 6
   m_Name: UI_MineRockButton
   m_TagString: Untagged
@@ -86,7 +87,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4952545172646709214}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -132,7 +133,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4952545172646709214}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4480a7999a2eaed46980cb8409c595fe, type: 3}
   m_Name: 
@@ -144,7 +145,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4952545172646709214}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56d2c55e16e4030458e163dfff2cbe2b, type: 3}
   m_Name: 
@@ -163,3 +164,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae7893d7cc6b474f825bbb785e39e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3000795003959662625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4952545172646709214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c97fb268e490a8439da6e14143501ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpriteSet: {fileID: 11400000, guid: fa8f33d2c3034014cbdbf75474807525, type: 2}
