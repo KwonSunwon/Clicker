@@ -16,13 +16,13 @@ public class LineState
     public int Depth;
     public bool IsTopLine;
     public List<RockState> Rocks = new();
-    //public List<VeinState> Veins = new();
+    public List<VeinState> Veins = new();
 }
 
 [Serializable]
 public class RockState
 {
-    public int Id;
+    public string Id;  // HEX (depth * 100) + 1 ~ E
     //public int Type;
     public int Hp;
     //public int MaxHp;
@@ -32,8 +32,9 @@ public class RockState
 [Serializable]
 public class VeinState
 {
-    public int Id;
-    public int Type;
+    public string Id;    // HEX (depth * 100) + (1 ~ E * 10)
+    public string Pos;   // Rock Id
+    //public int Type;
 }
 
 public interface IMineRules
@@ -47,6 +48,7 @@ public sealed class MineDomain
     public event Action<int, int> OnRockDamaged;    // <rockId, remainingHp>
     public event Action<int> OnRockBroken;          // <rockId>
     public event Action<int> OnLineAdded;           // <newLineDepth>
+    public event Action<int, int> OnVeinClicked;    // <veinId, oreType> 
 
     readonly MineState _state;
     readonly IMineRules _rules;
@@ -59,6 +61,17 @@ public sealed class MineDomain
         _rng = new(seed);
     }
 
+    public void CheckAllRockBroken()
+    {
+        foreach (var line in _state.Lines) {
+            if (!line.IsTopLine) continue;
+            foreach (var rock in line.Rocks) {
+                if (rock.IsBroken) OnRockBroken?.Invoke(GetDec(rock.Id));
+            }
+        }
+    }
+
+    //TODO: damage 부분은 나중에 player 데이터를 직접 받아서 IMineRules 를 통해 계산하도록 변경
     public void ClickRock(int rockId, int damage)
     {
         Debug.Log($"ClickRock {rockId} with damage {damage}");
@@ -67,12 +80,23 @@ public sealed class MineDomain
         if (!line.IsTopLine || rock == null || rock.IsBroken) return;
 
         rock.Hp -= damage;
-        OnRockDamaged?.Invoke(rock.Id, Math.Max(rock.Hp, 0));
+        OnRockDamaged?.Invoke(GetDec(rock.Id), Math.Max(rock.Hp, 0));
 
         if (rock.IsBroken) {
-            OnRockBroken?.Invoke(rock.Id);
+            OnRockBroken?.Invoke(GetDec(rock.Id));
             TryExtendLineIfCleared(line);
         }
+    }
+
+    //TODO: damage 부분은 나중에 player 데이터를 직접 받아서 IMineRules 를 통해 계산하도록 변경
+    public void ClickVein(int veinId, int damage)
+    {
+        Debug.Log($"ClickVein {veinId}");
+
+        var (line, vein) = FindVein(veinId);
+        if (vein == null) return;
+
+        OnVeinClicked?.Invoke(GetDec(vein.Id), 1);
     }
 
     void TryExtendLineIfCleared(LineState line)
@@ -105,11 +129,23 @@ public sealed class MineDomain
     (LineState, RockState) FindRock(int rockId)
     {
         foreach (var line in _state.Lines) {
-            var r = line.Rocks.Find(x => x.Id == rockId);
+            var r = line.Rocks.Find(x => GetDec(x.Id) == rockId);
             if (r != null) return (line, r);
         }
         return (null, null);
     }
 
-    int GetNextRockId(int depth, int index) => depth * 100 + index;
+    (LineState, VeinState) FindVein(int veinId)
+    {
+        foreach (var line in _state.Lines) {
+            var v = line.Veins.Find(x => GetDec(x.Id) == veinId);
+            if (v != null) return (line, v);
+        }
+        return (null, null);
+    }
+
+    string GetNextRockId(int depth, int index) => GetHex(depth * 100 + index);
+
+    static public int GetDec(string id) => Convert.ToInt32(id, 16);
+    static public string GetHex(int id) => id.ToString("X");
 }

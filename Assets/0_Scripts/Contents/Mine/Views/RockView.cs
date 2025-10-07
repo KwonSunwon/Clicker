@@ -23,7 +23,7 @@ public class RockView : MonoBehaviour, IPointerClickHandler
         _collider = GetComponent<BoxCollider2D>();
         _collider.enabled = true;
 
-        Id = data.Id;
+        Id = MineDomain.GetDec(data.Id);
         OnClick = onClick;
         Refresh(data);
     }
