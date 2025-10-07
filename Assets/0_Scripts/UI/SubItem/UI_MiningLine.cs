@@ -93,7 +93,7 @@ public class UI_MiningLine : UI_Base
             //OreTypeSet.Dict.TryGetValue(Depth / 10, out var oreTypes);
             //int typeRandom = UnityEngine.Random.Range(0, oreTypes.Count);
 
-            AddOreVein(OreBase.OreType.Coal, index, out UI_MineOreVeinButton vein);
+            AddOreVein(OreBase.OreType.Coal, index, out var vein);
             //_rocks[index].OnMineRockBroken += vein.SetActiveByRock;
             //_oreVeins.Add(vein);
         }
@@ -154,6 +154,7 @@ public class UI_MiningLine : UI_Base
     // -> 다른 버그 맨 위 아니어도 부셔지고, 맨 아래를 다 부셨을 때 아래 라인이 생기지 않음
     // 맨 위가 아닌 다른 라인 부셔지는 문제는 수정
     // 아래 라인이 생기지 않는 문제 해결해야됨 + 맨 위 라인 다 부셔도 다른 활성화 안됨
+    // 해결 완
 
     [ContextMenu("세이브 테스트")]
     public MiningLineSaveData MakeSaveData()
