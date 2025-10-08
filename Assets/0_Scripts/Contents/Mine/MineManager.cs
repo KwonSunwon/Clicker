@@ -88,6 +88,7 @@ public class MineManager : MonoBehaviour
         _domain.OnRockBroken += HandleRockBroken;
         _domain.OnLineAdded += HandleLineAdded;
         _domain.OnVeinClicked += HandleVeinDamaged;
+        _domain.OnLineClear += HandleLineClear;
 
         ReBuildAll();
 
@@ -167,6 +168,11 @@ public class MineManager : MonoBehaviour
             veinView.PlayDoTween();
             //TODO: 자원 획득 처리
         }
+    }
+
+    private void HandleLineClear(int lineDepth)
+    {
+        _lines[lineDepth].RemoveRock();
     }
     #endregion
 

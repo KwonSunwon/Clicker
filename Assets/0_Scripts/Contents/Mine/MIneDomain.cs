@@ -46,7 +46,8 @@ public sealed class MineDomain
     public event Action<int, int> OnRockDamaged;    // <rockId, remainingHp>
     public event Action<int> OnRockBroken;          // <rockId>
     public event Action<int> OnLineAdded;           // <newLineDepth>
-    public event Action<int, int> OnVeinClicked;    // <veinId, oreType> 
+    public event Action<int, int> OnVeinClicked;    // <veinId, oreType>
+    public event Action<int> OnLineClear;           // <lineDepth>
 
     readonly MineState _state;
     readonly IMineRules _rules;
@@ -105,6 +106,8 @@ public sealed class MineDomain
     {
         if (line.Rocks.TrueForAll(r => r.IsBroken)) {
             Debug.Log($"Line {line.Depth} Cleared, Adding New Line");
+
+            OnLineClear?.Invoke(line.Depth);
 
             //NOTE: 클리어된 다음 라인을 TopLine으로 설정해 클릭 가능하도록
             _state.Lines[line.Depth + 1].IsTopLine = true;

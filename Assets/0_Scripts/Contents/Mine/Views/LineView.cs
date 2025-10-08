@@ -37,6 +37,13 @@ public class LineView : MonoBehaviour
         _veins.Add(veinView.Id, veinView);
     }
 
+    public void RemoveRock()
+    {
+        foreach (var rock in _rocks.Values)
+            Destroy(rock.gameObject);
+        _rocks.Clear();
+    }
+
     public bool TryGetRockView(int rockId, out RockView rockView) => _rocks.TryGetValue(rockId, out rockView);
     public bool TryGetVeinView(int veinId, out VeinView veinView) => _veins.TryGetValue(veinId, out veinView);
 }
