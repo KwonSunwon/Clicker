@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using static Util;
+
 public class LineView : MonoBehaviour
 {
     private Transform container;
@@ -39,8 +41,11 @@ public class LineView : MonoBehaviour
 
     public void RemoveRock()
     {
-        foreach (var rock in _rocks.Values)
-            Destroy(rock.gameObject);
+        var cnt = _rocks.Count;
+        for (int i = 1; i <= cnt; i++) {
+            _rocks.Remove(MakeRockId(Depth, i), out var rock);
+            if (rock != null) Destroy(rock.gameObject);
+        }
         _rocks.Clear();
     }
 

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+using static Util;
+
 /// <summary>
 /// MineData, MineUI 관리
 /// Mine에 object를 추가하고 제거하는 모든 작업을 여기에 요청해서 처리
@@ -140,7 +142,7 @@ public class MineManager : MonoBehaviour
         }
 
         //TODO: VeinView 활성화
-        var vein = line.Veins.Find(x => MineDomain.GetDec(x.Pos) == rockId);
+        var vein = line.Veins.Find(x => GetDec(x.Pos) == rockId);
         if (vein == null) return;
         var veinView = SpawnVeinView(vein, rockView);
         lineView.AddVeinView(veinView);
@@ -238,7 +240,7 @@ public class MineManager : MonoBehaviour
     RockState FindRockState(int rockId, out LineState lineOut)
     {
         foreach (var line in _state.Lines) {
-            var r = line.Rocks.Find(x => MineDomain.GetDec(x.Id) == rockId);
+            var r = line.Rocks.Find(x => GetDec(x.Id) == rockId);
             if (r != null) {
                 lineOut = line;
                 return r;
@@ -251,7 +253,7 @@ public class MineManager : MonoBehaviour
     VeinState FindVeinState(int veinId, out LineState lineOut)
     {
         foreach (var line in _state.Lines) {
-            var v = line.Veins.Find(x => MineDomain.GetDec(x.Id) == veinId);
+            var v = line.Veins.Find(x => GetDec(x.Id) == veinId);
             if (v != null) {
                 lineOut = line;
                 return v;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using static Util;
+
 #region State Classes
 public class MineState
 {
@@ -120,7 +122,7 @@ public sealed class MineDomain
             int rockCount = 15;
             for (int i = 0; i < rockCount; i++) {
                 var rock = new RockState {
-                    Id = GetNextRockId(newDepth, i),
+                    Id = MakeHexRockId(newDepth, i),
                     Hp = 6
                 };
                 newLine.Rocks.Add(rock);
@@ -142,7 +144,7 @@ public sealed class MineDomain
 
         for (int i = 0; i < VeinCount; i++) {
             var vein = new VeinState {
-                Id = GetNextVeinId(line.Depth, i)
+                Id = MakeHexVeinId(line.Depth, i)
             };
 
             // 2. 위치 결정
@@ -174,10 +176,4 @@ public sealed class MineDomain
         }
         return (null, null);
     }
-
-    string GetNextRockId(int depth, int index) => GetHex(depth * 100 + index);
-    string GetNextVeinId(int depth, int index) => GetHex(depth * 100 + (index + 1) * 10);
-
-    static public int GetDec(string id) => Convert.ToInt32(id, 16);
-    static public string GetHex(int id) => id.ToString("X");
 }

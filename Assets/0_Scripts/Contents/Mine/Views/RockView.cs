@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using static Util;
+
 public class RockView : MonoBehaviour, IPointerClickHandler
 {
     Image _img;
@@ -23,7 +25,7 @@ public class RockView : MonoBehaviour, IPointerClickHandler
         _collider = GetComponent<BoxCollider2D>();
         _collider.enabled = true;
 
-        Id = MineDomain.GetDec(data.Id);
+        Id = GetDec(data.Id);
         OnClick = onClick;
         Refresh(data);
     }
