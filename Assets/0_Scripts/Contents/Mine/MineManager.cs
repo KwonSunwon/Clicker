@@ -91,14 +91,14 @@ public class MineManager : MonoBehaviour
 
         ReBuildAll();
 
-        _domain.CheckAllRockBroken();
+        _domain.BreakIfHpZero();
     }
 
     void OnRockClicked(int rockId)
     {
         Debug.Log($"Rock Clicked: {rockId}");
 
-        _domain.ClickRock(rockId, damage: 1);
+        _domain.ClickRock(rockId, damage: 6);
     }
 
     void OnVeinClick(int veinId)

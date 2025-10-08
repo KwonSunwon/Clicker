@@ -59,7 +59,7 @@ public sealed class MineDomain
         _rng = new(seed);
     }
 
-    public void CheckAllRockBroken()
+    public void BreakIfHpZero()
     {
         foreach (var line in _state.Lines) {
             if (!line.IsTopLine) continue;
@@ -94,10 +94,14 @@ public sealed class MineDomain
         var (line, vein) = FindVein(veinId);
         if (vein == null) return;
 
+        //TODO: vein 클릭 시 종류에 따른 자원 획득, 효과 발동 등 로직 처리
+        var type = vein.Type;
+        //IDEA: IVeinHandler 같은 인터페이스를 만들어서 종류별로 처리?
+
         OnVeinClicked?.Invoke(GetDec(vein.Id), 1);
     }
 
-    void TryExtendLineIfCleared(LineState line)
+    private void TryExtendLineIfCleared(LineState line)
     {
         if (line.Rocks.TrueForAll(r => r.IsBroken)) {
             Debug.Log($"Line {line.Depth} Cleared, Adding New Line");
@@ -109,6 +113,7 @@ public sealed class MineDomain
             var newDepth = _state.Lines[^1].Depth + 1;
             var newLine = new LineState { Depth = newDepth, IsTopLine = false };
 
+            //TODO: IMineRules 를 통해 라인 생성 규칙 따로 빼기
             int rockCount = 15;
             for (int i = 0; i < rockCount; i++) {
                 var rock = new RockState {
@@ -118,9 +123,34 @@ public sealed class MineDomain
                 newLine.Rocks.Add(rock);
             }
 
+            AddVeinToLine(newLine);
+
             _state.Lines.Add(newLine);
             _state.CurrentDepth = newDepth;
             OnLineAdded?.Invoke(newDepth);
+        }
+    }
+
+    // TODO: IMineRules 로 옮기기
+    private void AddVeinToLine(LineState line)
+    {
+        // 1. Vein 개 수 결정
+        var VeinCount = _rng.Next(1, 3); // 임시로 1~2개 랜덤 -> 깊이에 따라 개수 변경, 특정 층 고정 규칙 추가
+
+        for (int i = 0; i < VeinCount; i++) {
+            var vein = new VeinState {
+                Id = GetNextVeinId(line.Depth, i)
+            };
+
+            // 2. 위치 결정
+            var idx = _rng.Next(0, line.Rocks.Count);
+            vein.Pos = line.Rocks[idx].Id; ;
+
+            // 3. 종류 결정
+            vein.Type = _rng.Next(0, (int)VeinType.MAX_NUM - 1);
+
+            // 5. LineState.Veins 에 추가
+            line.Veins.Add(vein);
         }
     }
 
@@ -143,6 +173,7 @@ public sealed class MineDomain
     }
 
     string GetNextRockId(int depth, int index) => GetHex(depth * 100 + index);
+    string GetNextVeinId(int depth, int index) => GetHex(depth * 100 + (index + 1) * 10);
 
     static public int GetDec(string id) => Convert.ToInt32(id, 16);
     static public string GetHex(int id) => id.ToString("X");
