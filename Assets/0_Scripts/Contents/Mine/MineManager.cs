@@ -46,8 +46,8 @@ public class MineManager : MonoBehaviour
                 new RockState { Id = "00F", Hp = 1 }
                 },
                 Veins = new() {
-                    new VeinState { Id = "010", Pos = "005" },
-                    new VeinState { Id = "020", Pos = "00B" }
+                    new VeinState { Id = "010", Pos = "005", Type = (int)VeinType.Bauxiet },
+                    new VeinState { Id = "020", Pos = "00B", Type = (int)VeinType.Coal }
                 }
             };
             _state.Lines.Add(line);
@@ -74,8 +74,8 @@ public class MineManager : MonoBehaviour
                 new RockState { Id = "10F", Hp = 6 }
                 },
                 Veins = new() {
-                    new VeinState { Id = "110", Pos = "10A" },
-                    new VeinState { Id = "120", Pos = "102" }
+                    new VeinState { Id = "110", Pos = "10A", Type = (int)VeinType.Copper },
+                    new VeinState { Id = "120", Pos = "102", Type = (int)VeinType.Diamond }
                 }
             };
             _state.Lines.Add(line);
@@ -182,6 +182,7 @@ public class MineManager : MonoBehaviour
         Canvas.ForceUpdateCanvases();
     }
 
+    #region View Spawning
     void AddLineView(LineState line)
     {
         var lineView = SpawnLineView(line);
@@ -210,7 +211,21 @@ public class MineManager : MonoBehaviour
         veinView.Bind(vein, rock, OnVeinClick);
         return veinView;
     }
+    #endregion
 
+    #region Save/Load
+    public void Save()
+    {
+
+    }
+
+    public void Load()
+    {
+
+    }
+    #endregion
+
+    #region Utility
     /// <summary>
     /// rockId로 RockState와 해당 Rock이 속한 LineState를 찾음
     /// </summary>
@@ -239,4 +254,5 @@ public class MineManager : MonoBehaviour
         lineOut = null;
         return null;
     }
+    #endregion
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
+#region State Classes
 public class MineState
 {
     public string Id;
@@ -10,7 +10,6 @@ public class MineState
     public List<LineState> Lines = new();
 }
 
-[Serializable]
 public class LineState
 {
     public int Depth;
@@ -19,7 +18,6 @@ public class LineState
     public List<VeinState> Veins = new();
 }
 
-[Serializable]
 public class RockState
 {
     public string Id;  // HEX (depth * 100) + 1 ~ E
@@ -29,13 +27,13 @@ public class RockState
     public bool IsBroken => Hp <= 0;
 }
 
-[Serializable]
 public class VeinState
 {
     public string Id;    // HEX (depth * 100) + (1 ~ E * 10)
     public string Pos;   // Rock Id
-    //public int Type;
+    public int Type;
 }
+#endregion
 
 public interface IMineRules
 {
