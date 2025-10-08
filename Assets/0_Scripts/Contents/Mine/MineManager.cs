@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 using static Util;
@@ -17,9 +18,14 @@ public class MineManager : MonoBehaviour
 
     readonly Dictionary<int, LineView> _lines = new();
 
+    private string SAVE_PATH;
+
     void Awake()
     {
-        #region CreateTempState
+        SAVE_PATH = Path.Combine(Application.persistentDataPath, "save_mine.json");
+
+        #region CreateTempState 
+        /*
         // TODO: 나중에 저장된 데이터 불러오기
         _state = new MineState {
             Id = "Player1_Mine",
@@ -82,9 +88,12 @@ public class MineManager : MonoBehaviour
             };
             _state.Lines.Add(line);
         }
+        */
         #endregion
 
-        _domain = new MineDomain(_state, new DefaultMineRules(), seed: 12345);
+        //_domain = new MineDomain(_state, new DefaultMineRules(), seed: 12345);
+        _state = new();
+        _domain = new MineDomain(_state, new DefaultMineRules(), 12345);
 
         _domain.OnRockDamaged += HandleRockDamaged;
         _domain.OnRockBroken += HandleRockBroken;
@@ -93,7 +102,6 @@ public class MineManager : MonoBehaviour
         _domain.OnLineClear += HandleLineClear;
 
         ReBuildAll();
-
         _domain.BreakIfHpZero();
     }
 
@@ -183,6 +191,12 @@ public class MineManager : MonoBehaviour
     /// </summary>
     void ReBuildAll()
     {
+        //NOTE: 기존 UI 제거
+        foreach (Transform child in lineContainer) {
+            if (child.GetComponent<LineView>() != null)
+                Destroy(child.gameObject);
+        }
+
         foreach (var line in _state.Lines) {
             AddLineView(line);
         }
@@ -222,14 +236,25 @@ public class MineManager : MonoBehaviour
     #endregion
 
     #region Save/Load
+    [ContextMenu("Save")]
     public void Save()
     {
-
+        var dto = MineMapper.ToDTO(_state);
+        var json = JsonUtility.ToJson(dto);
+        File.WriteAllText(SAVE_PATH, json);
     }
 
-    public void Load()
+    [ContextMenu("Load")]
+    public MineState Load()
     {
+        var json = File.ReadAllText(SAVE_PATH);
+        var dto = JsonUtility.FromJson<MineSaveDTO>(json);
+        MineMapper.FromDTO(dto, ref _state);
 
+        ReBuildAll();
+        _domain.BreakIfHpZero();
+
+        return _state;
     }
     #endregion
 
