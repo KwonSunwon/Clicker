@@ -1,4 +1,6 @@
-﻿public class MineMapper
+﻿using static Util;
+
+public class MineMapper
 {
     public const int CURRENT_VERSION = 1;
 
@@ -20,7 +22,7 @@
 
             foreach (var rock in line.Rocks) {
                 var rockDTO = new RockSaveDTO {
-                    Id = rock.Id,
+                    Id = GetHex(rock.Id),
                     Hp = rock.Hp
                 };
                 lineDTO.Rocks.Add(rockDTO);
@@ -28,8 +30,8 @@
 
             foreach (var vein in line.Veins) {
                 var veinDTO = new VeinSaveDTO {
-                    Id = vein.Id,
-                    Pos = vein.Pos,
+                    Id = GetHex(vein.Id),
+                    Pos = GetHex(vein.Pos),
                     Type = vein.Type
                 };
                 lineDTO.Veins.Add(veinDTO);
@@ -40,38 +42,45 @@
         return dto;
     }
 
-    public static void FromDTO(MineSaveDTO dto, ref MineState state)
+    public static bool FromDTO(MineSaveDTO dto, ref MineState state)
     {
-        state.Id = dto.Id;
-        state.CurrentDepth = dto.CurrentDepth;
-        state.Lines = new();
+        try {
+            state.Id = dto.Id;
+            state.CurrentDepth = dto.CurrentDepth;
+            state.Lines = new();
 
-        foreach (var lineDTO in dto.Lines) {
-            var line = new LineState {
-                Depth = lineDTO.Depth,
-                IsTopLine = lineDTO.IsTopLine,
-                Rocks = new(),
-                Veins = new()
-            };
-
-            foreach (var rockDTO in lineDTO.Rocks) {
-                var rock = new RockState {
-                    Id = rockDTO.Id,
-                    Hp = rockDTO.Hp
+            foreach (var lineDTO in dto.Lines) {
+                var line = new LineState {
+                    Depth = lineDTO.Depth,
+                    IsTopLine = lineDTO.IsTopLine,
+                    Rocks = new(),
+                    Veins = new()
                 };
-                line.Rocks.Add(rock);
-            }
 
-            foreach (var veinDTO in lineDTO.Veins) {
-                var vein = new VeinState {
-                    Id = veinDTO.Id,
-                    Pos = veinDTO.Pos,
-                    Type = veinDTO.Type
-                };
-                line.Veins.Add(vein);
-            }
+                foreach (var rockDTO in lineDTO.Rocks) {
+                    var rock = new RockState {
+                        Id = GetDec(rockDTO.Id),
+                        Hp = rockDTO.Hp
+                    };
+                    line.Rocks.Add(rock);
+                }
 
-            state.Lines.Add(line);
+                foreach (var veinDTO in lineDTO.Veins) {
+                    var vein = new VeinState {
+                        Id = GetDec(veinDTO.Id),
+                        Pos = GetDec(veinDTO.Pos),
+                        Type = veinDTO.Type
+                    };
+                    line.Veins.Add(vein);
+                }
+
+                state.Lines.Add(line);
+            }
+            return true;
+        }
+        catch (System.Exception e) {
+            UnityEngine.Debug.LogError($"@MineMapper FromDTO failed: {e}");
+            return false;
         }
     }
 }

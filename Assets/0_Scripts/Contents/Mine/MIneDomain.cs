@@ -22,7 +22,7 @@ public class LineState
 
 public class RockState
 {
-    public string Id;  // HEX (depth * 100) + 1 ~ E
+    public int Id;  // HEX (depth * 100) + 1 ~ E
     //public int Type;
     public int Hp;
     //public int MaxHp;
@@ -31,8 +31,8 @@ public class RockState
 
 public class VeinState
 {
-    public string Id;    // HEX (depth * 100) + (1 ~ E * 10)
-    public string Pos;   // Rock Id
+    public int Id;    // HEX (depth * 100) + (1 ~ E * 10)
+    public int Pos;   // Rock Id
     public int Type;
 }
 #endregion
@@ -67,7 +67,7 @@ public sealed class MineDomain
         foreach (var line in _state.Lines) {
             if (!line.IsTopLine) continue;
             foreach (var rock in line.Rocks) {
-                if (rock.IsBroken) OnRockBroken?.Invoke(GetDec(rock.Id));
+                if (rock.IsBroken) OnRockBroken?.Invoke(rock.Id);
             }
         }
     }
@@ -81,10 +81,10 @@ public sealed class MineDomain
         if (!line.IsTopLine || rock == null || rock.IsBroken) return;
 
         rock.Hp -= damage;
-        OnRockDamaged?.Invoke(GetDec(rock.Id), Math.Max(rock.Hp, 0));
+        OnRockDamaged?.Invoke(rock.Id, Math.Max(rock.Hp, 0));
 
         if (rock.IsBroken) {
-            OnRockBroken?.Invoke(GetDec(rock.Id));
+            OnRockBroken?.Invoke(rock.Id);
             TryExtendLineIfCleared(line);
         }
     }
@@ -101,7 +101,7 @@ public sealed class MineDomain
         var type = vein.Type;
         //IDEA: IVeinHandler 같은 인터페이스를 만들어서 종류별로 처리?
 
-        OnVeinClicked?.Invoke(GetDec(vein.Id), 1);
+        OnVeinClicked?.Invoke(vein.Id, 1);
     }
 
     private void TryExtendLineIfCleared(LineState line)
@@ -122,7 +122,7 @@ public sealed class MineDomain
             int rockCount = 15;
             for (int i = 0; i < rockCount; i++) {
                 var rock = new RockState {
-                    Id = MakeHexRockId(newDepth, i),
+                    Id = MakeRockId(newDepth, i),
                     Hp = 6
                 };
                 newLine.Rocks.Add(rock);
@@ -144,7 +144,7 @@ public sealed class MineDomain
 
         for (int i = 0; i < VeinCount; i++) {
             var vein = new VeinState {
-                Id = MakeHexVeinId(line.Depth, i)
+                Id = MakeVeinId(line.Depth, i)
             };
 
             // 2. 위치 결정
@@ -162,7 +162,7 @@ public sealed class MineDomain
     (LineState, RockState) FindRock(int rockId)
     {
         foreach (var line in _state.Lines) {
-            var r = line.Rocks.Find(x => GetDec(x.Id) == rockId);
+            var r = line.Rocks.Find(x => x.Id == rockId);
             if (r != null) return (line, r);
         }
         return (null, null);
@@ -171,7 +171,7 @@ public sealed class MineDomain
     (LineState, VeinState) FindVein(int veinId)
     {
         foreach (var line in _state.Lines) {
-            var v = line.Veins.Find(x => GetDec(x.Id) == veinId);
+            var v = line.Veins.Find(x => x.Id == veinId);
             if (v != null) return (line, v);
         }
         return (null, null);

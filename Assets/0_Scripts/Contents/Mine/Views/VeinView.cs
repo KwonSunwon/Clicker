@@ -6,8 +6,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 
-using static Util;
-
 public enum VeinType
 {
     Bauxiet,
@@ -57,7 +55,7 @@ public class VeinView : MonoBehaviour, IPointerClickHandler
 
     public void Bind(VeinState data, RockView rock, Action<int> onClick)
     {
-        Id = GetDec(data.Id);
+        Id = data.Id;
         Type = data.Type;
         OnClick = onClick;
 
