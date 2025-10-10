@@ -92,7 +92,7 @@ public class MineManager : MonoBehaviour
 
         //_domain = new MineDomain(_state, new DefaultMineRules(), seed: 12345);
         _state = new();
-        MineMapper.FromDTO(dto, ref _state);
+        MineMapper.FromDTO(dto, _state);
         _domain = new MineDomain(_state, new DefaultMineRules(), 12345);
 
         _domain.OnRockDamaged += HandleRockDamaged;
@@ -249,7 +249,7 @@ public class MineManager : MonoBehaviour
     {
         var json = File.ReadAllText(SAVE_PATH);
         var dto = JsonUtility.FromJson<MineSaveDTO>(json);
-        MineMapper.FromDTO(dto, ref _state);
+        MineMapper.FromDTO(dto, _state);
 
         ReBuildAll();
         _domain.BreakIfHpZero();

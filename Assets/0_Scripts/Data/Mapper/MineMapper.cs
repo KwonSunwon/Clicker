@@ -42,7 +42,7 @@ public class MineMapper
         return dto;
     }
 
-    public static bool FromDTO(MineSaveDTO dto, ref MineState state)
+    public static bool FromDTO(MineSaveDTO dto, MineState state)
     {
         try {
             state.Id = dto.Id;
