@@ -39,7 +39,10 @@ public class VeinState
 
 public interface IMineRules
 {
+    public IReadOnlyList<VeinState> PlanVeinToLine(LineState line, System.Random rng);
 
+    public int RocksPerLine();
+    public int RockHpForDepth(int depth);
 }
 
 public sealed class MineDomain
@@ -116,47 +119,37 @@ public sealed class MineDomain
 
             //NOTE: 맨 아래에 새로운 라인 추가
             var newDepth = _state.Lines[^1].Depth + 1;
-            var newLine = new LineState { Depth = newDepth, IsTopLine = false };
-
-            //TODO: IMineRules 를 통해 라인 생성 규칙 따로 빼기
-            int rockCount = 15;
-            for (int i = 0; i < rockCount; i++) {
-                var rock = new RockState {
-                    Id = MakeRockId(newDepth, i),
-                    Hp = 6
-                };
-                newLine.Rocks.Add(rock);
-            }
-
-            AddVeinToLine(newLine);
-
-            _state.Lines.Add(newLine);
+            _state.Lines.Add(MakeNewLine(newDepth));
             _state.CurrentDepth = newDepth;
             OnLineAdded?.Invoke(newDepth);
         }
     }
 
-    // TODO: IMineRules 로 옮기기
+    private LineState MakeNewLine(int depth)
+    {
+        var newLine = new LineState { Depth = depth, IsTopLine = false };
+
+        AddRockToLine(newLine);
+        AddVeinToLine(newLine);
+
+        return newLine;
+    }
+
+    private void AddRockToLine(LineState line)
+    {
+        for (int i = 0; i < _rules.RocksPerLine(); i++) {
+            var rock = new RockState {
+                Id = MakeRockId(line.Depth, i),
+                Hp = _rules.RockHpForDepth(line.Depth)
+            };
+            line.Rocks.Add(rock);
+        }
+    }
+
     private void AddVeinToLine(LineState line)
     {
-        // 1. Vein 개 수 결정
-        var VeinCount = _rng.Next(1, 3); // 임시로 1~2개 랜덤 -> 깊이에 따라 개수 변경, 특정 층 고정 규칙 추가
-
-        for (int i = 0; i < VeinCount; i++) {
-            var vein = new VeinState {
-                Id = MakeVeinId(line.Depth, i)
-            };
-
-            // 2. 위치 결정
-            var idx = _rng.Next(0, line.Rocks.Count);
-            vein.Pos = line.Rocks[idx].Id; ;
-
-            // 3. 종류 결정
-            vein.Type = _rng.Next(0, (int)VeinType.MAX_NUM - 1);
-
-            // 5. LineState.Veins 에 추가
-            line.Veins.Add(vein);
-        }
+        var veins = _rules.PlanVeinToLine(line, _rng);
+        line.Veins.AddRange(veins);
     }
 
     (LineState, RockState) FindRock(int rockId)
