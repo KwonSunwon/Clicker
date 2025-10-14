@@ -148,4 +148,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c97fb268e490a8439da6e14143501ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpriteSet: {fileID: 11400000, guid: fa8f33d2c3034014cbdbf75474807525, type: 2}
+  _spriteSet: {fileID: 11400000, guid: fa8f33d2c3034014cbdbf75474807525, type: 2}
+  _id: 0

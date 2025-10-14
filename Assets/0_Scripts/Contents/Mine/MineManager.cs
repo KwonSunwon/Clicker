@@ -8,14 +8,14 @@ using UnityEngine;
 /// </summary>
 public class MineManager : MonoBehaviour
 {
-    [SerializeField] Transform lineContainer;
-    [SerializeField] Transform lineAddPosition;
+    [SerializeField] private Transform lineContainer;
+    [SerializeField] private Transform lineAddPosition;
 
-    MineState _state;
-    MineDomain _domain;
+    private MineState _state;
+    private MineDomain _domain;
 
     // <Depth, View>
-    readonly Dictionary<int, LineView> _lines = new();
+    private readonly Dictionary<int, LineView> _lines = new();
 
     private string SAVE_PATH;
 
@@ -109,7 +109,7 @@ public class MineManager : MonoBehaviour
     {
         Debug.Log($"Rock Clicked: {rockId}");
 
-        _domain.ClickRock(rockId, damage: 6);
+        _domain.ClickRock(rockId, damage: 2);
     }
 
     void OnVeinClick(int veinId)

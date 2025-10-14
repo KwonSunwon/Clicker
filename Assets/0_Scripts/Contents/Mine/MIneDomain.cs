@@ -54,14 +54,14 @@ public sealed class MineDomain
     public event Action<int, int> OnVeinClicked;    // <veinId, oreType>
     public event Action<int> OnLineClear;           // <lineDepth>
 
-    readonly MineState _state;
-    readonly IMineRules _rules;
-    readonly System.Random _rng;
+    private readonly MineState _state;
+    private readonly IMineRules _rules;
+    private readonly System.Random _rng;
 
-    public MineDomain(MineState state, IMineRules ruls, int seed)
+    public MineDomain(MineState state, IMineRules rules, int seed)
     {
         _state = state;
-        _rules = ruls;
+        _rules = rules;
         _rng = new(seed);
     }
 

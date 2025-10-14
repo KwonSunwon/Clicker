@@ -6,17 +6,18 @@ using static Util;
 
 public class LineView : MonoBehaviour
 {
-    private Transform container;
+    private Transform _container;
 
-    public int Depth { get; private set; }
+    [SerializeField] private int _depth;
+    public int Depth => _depth;
 
     private readonly Dictionary<int, RockView> _rocks = new();
     private readonly Dictionary<int, VeinView> _veins = new();
 
     public void Bind(int depth)
     {
-        Depth = depth;
-        container = GetComponent<Transform>();
+        _depth = depth;
+        _container = GetComponent<Transform>();
     }
 
     public void BuildFrom(
@@ -27,7 +28,7 @@ public class LineView : MonoBehaviour
         Bind(lineState.Depth);
         foreach (var rockState in lineState.Rocks) {
             var rockView = SpawnRock(rockState);
-            rockView.transform.SetParent(container, false);
+            rockView.transform.SetParent(_container, false);
             _rocks.Add(rockView.Id, rockView);
         }
     }
@@ -35,7 +36,7 @@ public class LineView : MonoBehaviour
     public void AddVeinView(VeinView veinView)
     {
         if (_veins.ContainsKey(veinView.Id)) return;
-        veinView.transform.SetParent(container, false);
+        veinView.transform.SetParent(_container, false);
         _veins.Add(veinView.Id, veinView);
     }
 
@@ -43,7 +44,7 @@ public class LineView : MonoBehaviour
     {
         var cnt = _rocks.Count;
         for (int i = 1; i <= cnt; i++) {
-            _rocks.Remove(MakeRockId(Depth, i), out var rock);
+            _rocks.Remove(MakeRockId(_depth, i), out var rock);
             if (rock != null) Destroy(rock.gameObject);
         }
         _rocks.Clear();
