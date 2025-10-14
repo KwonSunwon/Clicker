@@ -49,7 +49,9 @@ public static class VeinSpriteCatalog
 public class VeinView : MonoBehaviour, IPointerClickHandler
 {
     public int Id { get; private set; }
-    public int Type { get; private set; }
+    public int Type { get; private set; } = (int)VeinType.MAX_NUM;
+
+    private Tweener _tw = null;
 
     Action<int> OnClick;
 
@@ -90,13 +92,15 @@ public class VeinView : MonoBehaviour, IPointerClickHandler
     public void PlayDoTween()
     {
         // DoTween
-        GetComponent<RectTransform>()?.DOShakeAnchorPos(
-            duration: 0.1f,
-            strength: new Vector2(5, 5),
-            vibrato: 100,
-            randomness: 180,
-            snapping: false,
-            fadeOut: false
-        ).SetLink(gameObject);
+        _tw ??= GetComponent<RectTransform>()?.DOShakeAnchorPos(
+             duration: 0.1f,
+             strength: new Vector2(5, 5),
+             vibrato: 100,
+             randomness: 180,
+             snapping: false,
+             fadeOut: false
+         ).SetAutoKill(false).SetLink(gameObject).Pause();
+
+        _tw?.Restart();
     }
 }

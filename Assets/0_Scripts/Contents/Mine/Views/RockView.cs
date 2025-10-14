@@ -14,6 +14,8 @@ public class RockView : MonoBehaviour, IPointerClickHandler
     [SerializeField] private int _id = 0;
     public int Id => _id;
 
+    private Tweener _tw = null;
+
     Action<int> OnClick;
 
     public void Bind(RockState data, Action<int> onClick)
@@ -56,13 +58,15 @@ public class RockView : MonoBehaviour, IPointerClickHandler
     public void PlayDoTween()
     {
         // DoTween
-        GetComponent<RectTransform>()?.DOShakeAnchorPos(
-            duration: 0.1f,
-            strength: new Vector2(5, 5),
-            vibrato: 100,
-            randomness: 180,
-            snapping: false,
-            fadeOut: false
-        ).SetLink(gameObject);
+        _tw ??= GetComponent<RectTransform>()?.DOShakeAnchorPos(
+             duration: 0.1f,
+             strength: new Vector2(5, 5),
+             vibrato: 100,
+             randomness: 180,
+             snapping: false,
+             fadeOut: false
+         ).SetAutoKill(false).SetLink(gameObject).Pause();
+
+        _tw?.Restart();
     }
 }
