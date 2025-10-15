@@ -45,8 +45,14 @@ public class Util
         return null;
     }
 
-    static public int MakeRockId(int depth, int index) => depth * 100 + index;
-    static public int MakeVeinId(int depth, int index) => depth * 100 + (index + 1) * 10;
+    static public int MakeRockId(int depth, int index)
+    {
+        return depth * 256 + index + 1;
+    }
+    static public int MakeVeinId(int depth, int index)
+    {
+        return depth * 256 + (index + 1) * 16;
+    }
 
     static public string MakeHexRockId(int depth, int index) => GetHex(MakeRockId(depth, index));
     static public string MakeHexVeinId(int depth, int index) => GetHex(MakeVeinId(depth, index));

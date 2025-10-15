@@ -35,23 +35,24 @@ public class MineManager : MonoBehaviour
             var line = new LineSaveDTO {
                 Depth = 0,
                 IsTopLine = true,
-                Rocks = new() {
-                new RockSaveDTO { Id = "001", Hp = 3 },
-                new RockSaveDTO { Id = "002", Hp = 0 },
-                new RockSaveDTO { Id = "003", Hp = 5 },
-                new RockSaveDTO { Id = "004", Hp = 5 },
-                new RockSaveDTO { Id = "005", Hp = 0 },
-                new RockSaveDTO { Id = "006", Hp = 4 },
-                new RockSaveDTO { Id = "007", Hp = 2 },
-                new RockSaveDTO { Id = "008", Hp = 3 },
-                new RockSaveDTO { Id = "009", Hp = 0 },
-                new RockSaveDTO { Id = "00A", Hp = 2 },
-                new RockSaveDTO { Id = "00B", Hp = 1 },
-                new RockSaveDTO { Id = "00C", Hp = 5 },
-                new RockSaveDTO { Id = "00D", Hp = 4 },
-                new RockSaveDTO { Id = "00E", Hp = 2 },
-                new RockSaveDTO { Id = "00F", Hp = 1 }
-                },
+                Rocks = null,
+                //Rocks = new() {
+                //new RockSaveDTO { Id = "001", Hp = 3 },
+                //new RockSaveDTO { Id = "002", Hp = 0 },
+                //new RockSaveDTO { Id = "003", Hp = 5 },
+                //new RockSaveDTO { Id = "004", Hp = 5 },
+                //new RockSaveDTO { Id = "005", Hp = 0 },
+                //new RockSaveDTO { Id = "006", Hp = 4 },
+                //new RockSaveDTO { Id = "007", Hp = 2 },
+                //new RockSaveDTO { Id = "008", Hp = 3 },
+                //new RockSaveDTO { Id = "009", Hp = 0 },
+                //new RockSaveDTO { Id = "00A", Hp = 2 },
+                //new RockSaveDTO { Id = "00B", Hp = 1 },
+                //new RockSaveDTO { Id = "00C", Hp = 5 },
+                //new RockSaveDTO { Id = "00D", Hp = 4 },
+                //new RockSaveDTO { Id = "00E", Hp = 2 },
+                //new RockSaveDTO { Id = "00F", Hp = 1 }
+                //},
                 Veins = new() {
                     new VeinSaveDTO { Id = "010", Pos = "005", Type = (int)VeinType.Bauxiet },
                     new VeinSaveDTO { Id = "020", Pos = "00B", Type = (int)VeinType.Coal }
@@ -62,7 +63,7 @@ public class MineManager : MonoBehaviour
         {
             var line = new LineSaveDTO {
                 Depth = 1,
-                IsTopLine = false,
+                IsTopLine = true,
                 Rocks = new() {
                 new RockSaveDTO { Id = "101", Hp = 6 },
                 new RockSaveDTO { Id = "102", Hp = 6 },
@@ -87,7 +88,34 @@ public class MineManager : MonoBehaviour
             };
             dto.Lines.Add(line);
         }
-
+        {
+            var line = new LineSaveDTO {
+                Depth = 2,
+                IsTopLine = false,
+                Rocks = new() {
+                new RockSaveDTO { Id = "201", Hp = 6 },
+                new RockSaveDTO { Id = "202", Hp = 6 },
+                new RockSaveDTO { Id = "203", Hp = 6 },
+                new RockSaveDTO { Id = "204", Hp = 6 },
+                new RockSaveDTO { Id = "205", Hp = 6 },
+                new RockSaveDTO { Id = "206", Hp = 6 },
+                new RockSaveDTO { Id = "207", Hp = 6 },
+                new RockSaveDTO { Id = "208", Hp = 6 },
+                new RockSaveDTO { Id = "209", Hp = 6 },
+                new RockSaveDTO { Id = "20A", Hp = 6 },
+                new RockSaveDTO { Id = "20B", Hp = 6 },
+                new RockSaveDTO { Id = "20C", Hp = 6 },
+                new RockSaveDTO { Id = "20D", Hp = 6 },
+                new RockSaveDTO { Id = "20E", Hp = 6 },
+                new RockSaveDTO { Id = "20F", Hp = 6 }
+                },
+                Veins = new() {
+                    new VeinSaveDTO { Id = "210", Pos = "20C", Type = (int)VeinType.Iron },
+                    new VeinSaveDTO { Id = "220", Pos = "204", Type = (int)VeinType.Coal }
+                }
+            };
+            dto.Lines.Add(line);
+        }
         #endregion
 
         //_domain = new MineDomain(_state, new DefaultMineRules(), seed: 12345);
@@ -149,10 +177,9 @@ public class MineManager : MonoBehaviour
             rockView.PlayBreak();
         }
 
-        //TODO: VeinView 활성화
         var vein = line.Veins.Find(x => x.Pos == rockId);
         if (vein == null) return;
-        var veinView = SpawnVeinView(vein, rockView);
+        var veinView = SpawnVeinView(vein);
         lineView.AddVeinView(veinView);
     }
 
@@ -191,6 +218,8 @@ public class MineManager : MonoBehaviour
     /// </summary>
     void ReBuildAll()
     {
+        //NOTE: Canvas 강제 갱신
+        Canvas.ForceUpdateCanvases();
         //NOTE: 기존 UI 제거
         foreach (Transform child in lineContainer) {
             if (child.GetComponent<LineView>() != null)
@@ -200,7 +229,7 @@ public class MineManager : MonoBehaviour
         foreach (var line in _state.Lines) {
             AddLineView(line);
         }
-        //NOTE: UI 업데이트 강제
+        //NOTE: Canvas 강제 갱신
         Canvas.ForceUpdateCanvases();
     }
 
@@ -227,10 +256,10 @@ public class MineManager : MonoBehaviour
         return rockView;
     }
 
-    VeinView SpawnVeinView(VeinState vein, RockView rock)
+    VeinView SpawnVeinView(VeinState vein)
     {
         var veinView = Managers.Resource.Instantiate("UI/SubItem/VeinView").GetOrAddComponent<VeinView>();
-        veinView.Bind(vein, rock, OnVeinClick);
+        veinView.Bind(vein, OnVeinClick);
         return veinView;
     }
     #endregion
@@ -265,7 +294,7 @@ public class MineManager : MonoBehaviour
     RockState FindRockState(int rockId, out LineState lineOut)
     {
         foreach (var line in _state.Lines) {
-            var r = line.Rocks.Find(x => x.Id == rockId);
+            var r = line.Rocks?.Find(x => x.Id == rockId);
             if (r != null) {
                 lineOut = line;
                 return r;
@@ -278,7 +307,7 @@ public class MineManager : MonoBehaviour
     VeinState FindVeinState(int veinId, out LineState lineOut)
     {
         foreach (var line in _state.Lines) {
-            var v = line.Veins.Find(x => x.Id == veinId);
+            var v = line.Veins?.Find(x => x.Id == veinId);
             if (v != null) {
                 lineOut = line;
                 return v;

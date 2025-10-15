@@ -16,13 +16,20 @@ public class LineState
 {
     public int Depth;
     public bool IsTopLine;
-    public List<RockState> Rocks = new();
+    public List<RockState> Rocks = null;
     public List<VeinState> Veins = new();
 }
 
+//NOTE: 게임 진행중에 ID는 10진법으로 저장되지만 16진법으로 해석해서 사용, 파일에 저장은 16진법 문자열로 저장됨
+// 총 3자리 16진법으 로 이루어짐
+// Rock: 최하위 한 자리 사용, 1부터 사용 => depth * 256 + index + 1
+// Vein: Rock 다음 하위 한 자리 사용, 1부터 사용 => depth * 256 + (index + 1) * 16
+// Depth: 하위 두 자리 이후 Depth가 기록됨
+// eg) Depth = 15이고 10번째에 위치한 Rock ID = 15 * 256 + (10 + 1) = 3851      => 0xF0B
+//     Depth = 5 이고 2 번째로 생성된 Vein ID =  5 * 256 + (2 + 1) * 16 = 1344  => 0x540
 public class RockState
 {
-    public int Id;  // HEX (depth * 100) + 1 ~ E
+    public int Id;
     //public int Type;
     public int Hp;
     //public int MaxHp;
@@ -31,7 +38,7 @@ public class RockState
 
 public class VeinState
 {
-    public int Id;    // HEX (depth * 100) + (1 ~ E * 10)
+    public int Id;
     public int Pos;   // Rock Id
     public int Type;
 }
@@ -69,6 +76,7 @@ public sealed class MineDomain
     {
         foreach (var line in _state.Lines) {
             if (!line.IsTopLine) continue;
+            if (line.Rocks == null) continue;
             foreach (var rock in line.Rocks) {
                 if (rock.IsBroken) OnRockBroken?.Invoke(rock.Id);
             }
@@ -112,6 +120,10 @@ public sealed class MineDomain
         if (line.Rocks.TrueForAll(r => r.IsBroken)) {
             Debug.Log($"Line {line.Depth} Cleared, Adding New Line");
 
+            //NOTE: 이 두 라인이 실행되어야 State에 있는 Rocks도 메모리를 차지하지 않고 제거됨
+            line.Rocks.Clear();
+            line.Rocks = null;
+
             OnLineClear?.Invoke(line.Depth);
 
             //NOTE: 클리어된 다음 라인을 TopLine으로 설정해 클릭 가능하도록
@@ -137,6 +149,7 @@ public sealed class MineDomain
 
     private void AddRockToLine(LineState line)
     {
+        line.Rocks = new();
         for (int i = 0; i < _rules.RocksPerLine(); i++) {
             var rock = new RockState {
                 Id = MakeRockId(line.Depth, i),
@@ -155,7 +168,7 @@ public sealed class MineDomain
     (LineState, RockState) FindRock(int rockId)
     {
         foreach (var line in _state.Lines) {
-            var r = line.Rocks.Find(x => x.Id == rockId);
+            var r = line.Rocks?.Find(x => x.Id == rockId);
             if (r != null) return (line, r);
         }
         return (null, null);
@@ -164,7 +177,7 @@ public sealed class MineDomain
     (LineState, VeinState) FindVein(int veinId)
     {
         foreach (var line in _state.Lines) {
-            var v = line.Veins.Find(x => x.Id == veinId);
+            var v = line.Veins?.Find(x => x.Id == veinId);
             if (v != null) return (line, v);
         }
         return (null, null);
