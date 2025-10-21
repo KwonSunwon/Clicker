@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "광물 획득량 증가",
-      "description": "모든 광물 채굴 시 획득량이 +10% 증가합니다. (최대 10회 중첩, 총 +100%)",
+      "description": "레벨당 모든 광물 채굴 시 획득량이 +10% 증가합니다. (최대 10회 중첩)",
       "skillCost": [
         { "type": "IronOre", "value": "20" }
       ],
@@ -11,18 +11,16 @@
       "Edges": [],
       "xPos": 0,
       "yPos": 200
-
     },
     {
       "id": 2,
-      "name": "광맥 채굴기계 해금",
-      "description": "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.",
+      "name": "보너스 자원 드롭",
+      "description": "레벨당 획득한 광물을 2배로 획득할 확률이 +2% 증가합니다. (최대 10회 중첩)",
       "skillCost": [
         { "type": "IronOre", "value": "20" },
-        { "type": "CopperOre", "value": "20" },
-        { "type": "Coal", "value": "20" }
+        { "type": "CopperOre", "value": "20" }
       ],
-      "precedingSkills": [],
+      "precedingSkills": [1],
       "Edges": [3],
       "xPos": -200,
       "yPos": 400
@@ -30,16 +28,222 @@
     {
       "id": 3,
       "name": "산소 절약 스킬",
-      "description": "클릭당 산소 소모량이 -5% 감소합니다. (최대 10회 중첩, 총 -50%)",
+      "description": "레벨당 클릭당 산소 소모량이 -5% 감소합니다. (최대 10회 중첩)",
       "skillCost": [
-        { "type": "Salt", "value": "20" },
-        { "type": "Bauxite", "value": "20" }
+        { "type": "IronOre", "value": "20" },
+        { "type": "Coal", "value": "20" }
       ],
-      "precedingSkills": [],
+      "precedingSkills": [1],
       "Edges": [4],
       "xPos": 0,
       "yPos": 400
+    },
+    {
+      "id": 4,
+      "name": "광맥 채굴기계 해금",
+      "description": "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다. (해금, 최대 1회)",
+      "skillCost": [
+        { "type": "IronOre", "value": "20" },
+        { "type": "CopperOre", "value": "20" },
+        { "type": "Coal", "value": "20" }
+      ],
+      "precedingSkills": [1],
+      "Edges": [5],
+      "xPos": 200,
+      "yPos": 400
+    },
+    {
+      "id": 5,
+      "name": "희귀 광물 발견",
+      "description": "레벨당 다음 단계 광물 발견 확률이 +3% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "Bauxite", "value": "20" },
+        { "type": "Salt", "value": "20" }
+      ],
+      "precedingSkills": [2],
+      "Edges": [4],
+      "xPos": -200,
+      "yPos": 600
+    },
+    {
+      "id": 6,
+      "name": "대용량 산소탱크",
+      "description": "레벨당 최대 산소량이 +30% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "Bauxite", "value": "20" },
+        { "type": "Quartz", "value": "20" }
+      ],
+      "precedingSkills": [3],
+      "Edges": [4],
+      "xPos": 0,
+      "yPos": 600
+    },
+    {
+      "id": 7,
+      "name": "스핀 모터 강화",
+      "description": "레벨당 모든 채굴기계 작업속도가 +7% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "Lithium", "value": "20" },
+        { "type": "Salt", "value": "20" }
+      ],
+      "precedingSkills": [4],
+      "Edges": [4],
+      "xPos": 200,
+      "yPos": 600
+    },
+    {
+      "id": 8,
+      "name": "광물 획득량 증가 II",
+      "description": "레벨당 모든 광물 채굴 시 획득량이 +20% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "Uranium", "value": "20" },
+        { "type": "GammaStone", "value": "20" },
+        { "type": "XenonCrystal", "value": "20" }
+      ],
+      "precedingSkills": [5],
+      "Edges": [4],
+      "xPos": -200,
+      "yPos": 800
+    },
+    {
+      "id": 9,
+      "name": "숨참기 훈련",
+      "description": "레벨당 클릭 시 산소를 소모하지 않을 확률이 +2% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "Emerald", "value": "20" },
+        { "type": "Ruby", "value": "20" },
+        { "type": "Diamond", "value": "20" }
+      ],
+      "precedingSkills": [6],
+      "Edges": [4],
+      "xPos": 0,
+      "yPos": 800
+    },
+    {
+      "id": 10,
+      "name": "채굴기계 광물 획득량 향상",
+      "description": "레벨당 모든 채굴기계 광물 획득량이 +6% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "Ruby", "value": "20" },
+        { "type": "Diamond", "value": "20" },
+        { "type": "Sapphire", "value": "20" }
+      ],
+      "precedingSkills": [7],
+      "Edges": [4],
+      "xPos": 200,
+      "yPos": 800
+    },
+    {
+      "id": 11,
+      "name": "산소 재활용",
+      "description": "레벨당 클릭 시 산소 회복 확률이 +3%, 회복량이 +0.5% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "Uranium", "value": "20" },
+        { "type": "GammaStone", "value": "20" },
+        { "type": "StellarIron", "value": "20" }
+      ],
+      "precedingSkills": [9],
+      "Edges": [4],
+      "xPos": 0,
+      "yPos": 1000
+    },
+    {
+      "id": 12,
+      "name": "엔진 강화",
+      "description": "레벨당 모든 채굴기계의 기본 채굴 파워가 +30% 증가합니다. (최대 10회 중첩)",
+      "skillCost": [
+        { "type": "XenonCrystal", "value": "20" },
+        { "type": "GammaStone", "value": "20" },
+        { "type": "StellarIron", "value": "20" }
+      ],
+      "precedingSkills": [10],
+      "Edges": [4],
+      "xPos": 200,
+      "yPos": 1000
+    },
+    {
+      "id": 13,
+      "name": "초대용량 산소탱크",
+      "description": "레벨당 최대 산소량이 +50% 증가합니다. (최대 5회 중첩)",
+      "skillCost": [
+        { "type": "QuantumFlux", "value": "20" },
+        { "type": "VoidCrystal", "value": "20" },
+        { "type": "DarkMatterShard", "value": "20" }
+      ],
+      "precedingSkills": [11],
+      "Edges": [4],
+      "xPos": 0,
+      "yPos": 1200
+    },
+    {
+      "id": 14,
+      "name": "개량형 채굴기계 해금",
+      "description": "개량형 채굴기계 설치가 가능합니다. (기본 기계의 2배 효율, 해금, 최대 1회)",
+      "skillCost": [
+        { "type": "Uranium", "value": "20" },
+        { "type": "XenonCrystal", "value": "20" },
+        { "type": "GammaStone", "value": "20" }
+      ],
+      "precedingSkills": [4],
+      "Edges": [5],
+      "xPos": 400,
+      "yPos": 600
+    },
+    {
+      "id": 15,
+      "name": "고성능 채굴기계 해금",
+      "description": "고성능 채굴기계 설치가 가능합니다. (기본 기계의 4배 효율, 해금, 최대 1회)",
+      "skillCost": [
+        { "type": "QuantumFlux", "value": "20" },
+        { "type": "VoidCrystal", "value": "20" },
+        { "type": "DarkMatterShard", "value": "20" }
+      ],
+      "precedingSkills": [14],
+      "Edges": [4],
+      "xPos": 400,
+      "yPos": 800
+    },
+    {
+      "id": 16,
+      "name": "정밀 채굴기계 해금",
+      "description": "정밀 채굴기계 설치가 가능합니다. (기본 기계의 8배 효율, 해금, 최대 1회)",
+      "skillCost": [
+        { "type": "NeutroniumOre", "value": "20" },
+        { "type": "AlienAlloy", "value": "20" },
+        { "type": "DarkMatterShard", "value": "20" }
+      ],
+      "precedingSkills": [15],
+      "Edges": [6],
+      "xPos": 600,
+      "yPos": 800
+    },
+    {
+      "id": 17,
+      "name": "하이테크 채굴기계 해금",
+      "description": "하이테크 채굴기계 설치가 가능합니다. (기본 기계의 20배 효율, 해금, 최대 1회)",
+      "skillCost": [
+        { "type": "NeutroniumOre", "value": "20" },
+        { "type": "AlienAlloy", "value": "20" },
+        { "type": "DarkMatterShard", "value": "20" }
+      ],
+      "precedingSkills": [16],
+      "Edges": [4],
+      "xPos": 600,
+      "yPos": 1000
+    },
+    {
+      "id": 18,
+      "name": "외계 채굴기계 해금",
+      "description": "외계 채굴기계 설치가 가능합니다. (기본 기계의 50배 효율, 해금, 최대 1회)",
+      "skillCost": [
+        { "type": "NeutroniumOre", "value": "20" },
+        { "type": "AlienAlloy", "value": "20" },
+        { "type": "DarkMatterShard", "value": "20" }
+      ],
+      "precedingSkills": [17],
+      "Edges": [2],
+      "xPos": 400,
+      "yPos": 1000
     }
-
   ]
 }
