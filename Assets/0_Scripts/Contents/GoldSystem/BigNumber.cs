@@ -1,13 +1,13 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 [Serializable]
 public struct BigNumber : IComparable<BigNumber>
 {
-	public double value;   // ½ÇÁ¦ °ª (10^100 °°Àº°Ç Ç¥Çö ºÒ°¡ÇÏ´Ï Áö¼ö »ç¿ë)
-	public int exponent;   // Áö¼ö (10 ´ÜÀ§·Î ¸î ¹ø °öÇØÁ³´ÂÁö)
+	public double value;   // ì‹¤ì œ ê°’ (10^100 ê°™ì€ê±´ í‘œí˜„ ë¶ˆê°€í•˜ë‹ˆ ì§€ìˆ˜ ì‚¬ìš©)
+	public int exponent;   // ì§€ìˆ˜ (10 ë‹¨ìœ„ë¡œ ëª‡ ë²ˆ ê³±í•´ì¡ŒëŠ”ì§€)
 
-	private const int BaseNum = 1000; // 1000 ³Ñ¾î°¡¸é Áö¼ö ¿Ã¸²
+	private const int BaseNum = 1000; // 1000 ë„˜ì–´ê°€ë©´ ì§€ìˆ˜ ì˜¬ë¦¼
 
 	public BigNumber(double val, int exp = 0)
 	{
@@ -16,7 +16,61 @@ public struct BigNumber : IComparable<BigNumber>
 		Normalize();
 	}
 
-	/// <summary> °ª Á¤±ÔÈ­ (1000 ÀÌ»óÀÌ¸é exponent Áõ°¡) </summary>
+	public BigNumber(string str)
+	{
+		value = 0;
+		exponent = 0;
+
+		if (string.IsNullOrWhiteSpace(str))
+		{
+			value = 0;
+			exponent = 0;
+			return;
+		}
+
+		str = str.Trim();
+
+		// eí‘œê¸°ë²• (ì˜ˆ: "1.23e6")
+		if (str.Contains("e", StringComparison.OrdinalIgnoreCase))
+		{
+			if (double.TryParse(str, System.Globalization.NumberStyles.Float, null, out double parsed))
+			{
+				// 1e6 -> value 1, exponent = 6 * (log10(1000)) ë³€í™˜
+				double exp10 = Math.Log10(parsed);
+				exponent = (int)Math.Floor(exp10 / 3);
+				value = parsed / Math.Pow(BaseNum, exponent);
+			}
+			else
+			{
+				value = 0;
+				exponent = 0;
+			}
+			return;
+		}
+
+		// ë‹¨ìœ„í‘œê¸° (A,B,C,...)
+		string[] suffix = { "", "A", "B", "C", "D", "E", "F", "G",
+							"H","I","J","K","L","M","N","O","P","Q",
+							"R","S","T","U","V","W","X","Y","Z",
+							"AA","AB","AC","AD","AE","AF" };
+
+		for (int i = suffix.Length - 1; i >= 0; i--)
+		{
+			if (suffix[i].Length > 0 && str.EndsWith(suffix[i], StringComparison.OrdinalIgnoreCase))
+			{
+				exponent = i;
+				str = str.Substring(0, str.Length - suffix[i].Length);
+				break;
+			}
+		}
+
+		if (!double.TryParse(str, out value))
+			value = 0;
+
+		Normalize();
+	}
+
+	/// <summary> ê°’ ì •ê·œí™” (1000 ì´ìƒì´ë©´ exponent ì¦ê°€) </summary>
 	private void Normalize()
 	{
 		while (value >= BaseNum)
@@ -31,13 +85,13 @@ public struct BigNumber : IComparable<BigNumber>
 		}
 	}
 
-	// µ¡¼À
+	// ë§ì…ˆ
 	public static BigNumber operator +(BigNumber a, BigNumber b)
 	{
 		if (a.exponent == b.exponent)
 			return new BigNumber(a.value + b.value, a.exponent);
 
-		// Å« Áö¼ö¿¡ ¸ÂÃç¼­ ÀÛÀº ÂÊÀ» º¯È¯
+		// í° ì§€ìˆ˜ì— ë§ì¶°ì„œ ì‘ì€ ìª½ì„ ë³€í™˜
 		if (a.exponent > b.exponent)
 		{
 			double diff = a.exponent - b.exponent;
@@ -50,7 +104,7 @@ public struct BigNumber : IComparable<BigNumber>
 		}
 	}
 
-	// »¬¼À
+	// ëº„ì…ˆ
 	public static BigNumber operator -(BigNumber a, BigNumber b)
 	{
 		if (a.exponent == b.exponent)
@@ -67,10 +121,10 @@ public struct BigNumber : IComparable<BigNumber>
 			return new BigNumber(a.value / Math.Pow(BaseNum, diff) - b.value, b.exponent);
 		}
 	}
-	// °ö¼À
+	// ê³±ì…ˆ
 	public static BigNumber operator *(BigNumber a, BigNumber b)
 	{
-		// (a.value * b.value) ¡¿ 1000^(a.exp + b.exp)
+		// (a.value * b.value) Ã— 1000^(a.exp + b.exp)
 		return new BigNumber(a.value * b.value, a.exponent + b.exponent);
 	}
 	public static BigNumber operator *(BigNumber a, double k) => new BigNumber(a.value * k, a.exponent);
@@ -79,7 +133,7 @@ public struct BigNumber : IComparable<BigNumber>
 	public static BigNumber operator /(BigNumber a, BigNumber b)
 	{
 		if (b.value == 0) throw new DivideByZeroException();
-		// (a.value / b.value) ¡¿ 1000^(a.exp - b.exp)
+		// (a.value / b.value) Ã— 1000^(a.exp - b.exp)
 		return new BigNumber(a.value / b.value, a.exponent - b.exponent);
 	}
 	public static BigNumber operator /(BigNumber a, double k)
@@ -90,7 +144,7 @@ public struct BigNumber : IComparable<BigNumber>
 
 
 
-	// ºñ±³
+	// ë¹„êµ
 	public int CompareTo(BigNumber other)
 	{
 		if (this.exponent != other.exponent)
@@ -98,7 +152,7 @@ public struct BigNumber : IComparable<BigNumber>
 		return this.value.CompareTo(other.value);
 	}
 
-	// ¹®ÀÚ¿­ º¯È¯ (´ÜÀ§ ºÙ¿©¼­ Ç¥½Ã)
+	// ë¬¸ìì—´ ë³€í™˜ (ë‹¨ìœ„ ë¶™ì—¬ì„œ í‘œì‹œ)
 	public override string ToString()
 	{
 		string[] suffix = { "", "A", "B", "C", "D", "E", "F", "G",

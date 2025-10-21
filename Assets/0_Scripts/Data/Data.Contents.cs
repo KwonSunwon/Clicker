@@ -55,6 +55,33 @@ namespace Data
 		public string name;
 		public string text;
 	}
+	[System.Serializable]
+	public class SkillCostDto
+	{
+		public string type;   // MineralType 이름 (예: "IronOre")
+		public string value;  // BigNumber 문자열 (예: "20", "1e6")
+	}
+
+	[System.Serializable]
+	public class SkillDto
+	{
+		public int id;
+		public string name;
+		public string description;
+		public int maxLevel;                  // 없음이면 0으로 들어오도록(선택)
+		public List<SkillCostDto> skillCost;  // 레벨 1 기준 고정 비용이면 그대로 사용
+		public List<int> precedingSkills;
+		public List<int> Edges;
+		public int xPos;
+		public int yPos;
+		
+	}
+
+	[System.Serializable]
+	public class SkillDatabaseDto
+	{
+		public List<SkillDto> skills;
+	}
 
 	[Serializable]
 	public class DialogData : ILoader<string, string>

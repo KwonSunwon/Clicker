@@ -1,0 +1,45 @@
+{
+  "skills": [
+    {
+      "id": 1,
+      "name": "광물 획득량 증가",
+      "description": "모든 광물 채굴 시 획득량이 +10% 증가합니다. (최대 10회 중첩, 총 +100%)",
+      "skillCost": [
+        { "type": "IronOre", "value": "20" }
+      ],
+      "precedingSkills": [],
+      "Edges": [],
+      "xPos": 0,
+      "yPos": 200
+
+    },
+    {
+      "id": 2,
+      "name": "광맥 채굴기계 해금",
+      "description": "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.",
+      "skillCost": [
+        { "type": "IronOre", "value": "20" },
+        { "type": "CopperOre", "value": "20" },
+        { "type": "Coal", "value": "20" }
+      ],
+      "precedingSkills": [],
+      "Edges": [3],
+      "xPos": -200,
+      "yPos": 400
+    },
+    {
+      "id": 3,
+      "name": "산소 절약 스킬",
+      "description": "클릭당 산소 소모량이 -5% 감소합니다. (최대 10회 중첩, 총 -50%)",
+      "skillCost": [
+        { "type": "Salt", "value": "20" },
+        { "type": "Bauxite", "value": "20" }
+      ],
+      "precedingSkills": [],
+      "Edges": [4],
+      "xPos": 0,
+      "yPos": 400
+    }
+
+  ]
+}

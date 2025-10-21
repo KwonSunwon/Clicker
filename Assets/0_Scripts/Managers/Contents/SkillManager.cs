@@ -5,254 +5,16 @@ using UnityEngine;
 
 public class SkillManager
 {
-	private Dictionary<int, SkillNodeData> SkillMap = new Dictionary<int, SkillNodeData>();
+	public Dictionary<int, SkillNodeData> SkillMap = new Dictionary<int, SkillNodeData>();
 	private Dictionary<int, ReincarnationNodeData> ReincarnationMap = new Dictionary<int, ReincarnationNodeData>();
 	public event Action UpdateSkillUI;
 	public void Init()
 	{
+		SkillMap = DataManager.BuildFromResources("Data/SkillData");
 		//SkillNodeData 중 level을 제외한 모든 파라미터는 엑셀 파일로 받아온다.
 		//SkillNodeData 중 현재 level을 로컬 파일에서 받아온다.
 		//Todo: 일단 임시로 15개 해두는데 전부 파일에서 읽어와야 함
-		{
-			Debug.Log("Skill Init");
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 1;
-				skill.Name = "광물 획득량 증가";
-				skill.Level = 0;
-				skill.Description = "모든 광물 채굴 시 획득량 +10% 증가합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					(MineralType.IronOre, new BigNumber(20))
-				};
-				skill.precedingSkills = new List<int>();
-				;
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 2;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 1 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 3;
-				skill.Name = "산소 절약 스킬";
-				skill.Level = 0;
-				skill.Description = "클릭당 산소 소모량이 -5% 감소합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					// Salt 20개 + Bauxite 20개
-					(MineralType.Salt, new BigNumber(20)),
-					(MineralType.Bauxite, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 2 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 4;
-				skill.Name = "대용량 산소탱크";
-				skill.Level = 0;
-				skill.Description = "최대 산소량이 +30% 증가합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Bauxite 20개 + Salt 20개
-					(MineralType.Bauxite, new BigNumber(20)),
-					(MineralType.Salt, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 3 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 5;
-				skill.Name = "숨참기 훈련";
-				skill.Level = 0;
-				skill.Description = "클릭 시 산소를 소모하지 않을 확률이 +2% 증가합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Emerald 20개 + Quartz 20개
-					(MineralType.Emerald, new BigNumber(20)),
-					(MineralType.Quartz, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 4 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 6;
-				skill.Name = "산소 재활용";
-				skill.Level = 0;
-				skill.Description = "클릭 시 산소를 회복할 확률 +3%, 회복량 +0.5% 증가합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Uranium 20개 + Xenon Crystal 20개
-					(MineralType.Uranium, new BigNumber(20)),
-					(MineralType.XenonCrystal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 5 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 7;
-				skill.Name = "초대용량 산소탱크";
-				skill.Level = 0;
-				skill.Description = "최대 산소량이 +50% 증가합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Quantum Flux 20개 + Void Crystal 20개
-					(MineralType.QuantumFlux, new BigNumber(20)),
-					(MineralType.VoidCrystal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 6 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 8;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 2 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 9;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 8 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 10;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 9 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 11;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 2 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 12;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 11 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 13;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 12 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 14;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 13 };
-				SkillMap.Add(skill.Id, skill);
-			}
-			{
-				SkillNodeData skill = new SkillNodeData();
-				skill.Id = 15;
-				skill.Name = "광맥 채굴기계 해금";
-				skill.Level = 0;
-				skill.Description = "광맥을 채굴해주는 기본 채굴기계 설치가 가능합니다.";
-				skill.SkillCost = new List<(MineralType, BigNumber)>
-				{
-					//Iron Ore 20개 + Copper Ore 20개 + Coal 20개
-					(MineralType.IronOre, new BigNumber(20)),
-					(MineralType.CopperOre, new BigNumber(20)),
-					(MineralType.Coal, new BigNumber(20)),
-				};
-				skill.precedingSkills = new List<int>() { 14 };
-				SkillMap.Add(skill.Id, skill);
-			}
 
-
-
-
-		}
 		{
 			Debug.Log("Rein Init");
 
@@ -297,6 +59,7 @@ public class SkillManager
 		}
 	}
 
+	
 	//Todo 스킬 세이브 로드 기능 해줘 순원
 	public SkillNodeData GetSkill(int id)
 	{
@@ -443,14 +206,20 @@ public class SkillNodeData
 {
 	public int Id { get; set; }
 	public string Name { get; set; }
-	public int MaxLevel { get; set; }
 	public string Description { get; set; }
+	public int MaxLevel { get; set; }
+	
 
 	public List<(MineralType mineralType, BigNumber cost)> SkillCost { get; set; }
 	public List<int> precedingSkills { get; set; }
+	public List<int> Edges { get; set; }
 
+	public int Xpos {  get; set; }
+	public int Ypos { get; set; }
 	public int Level { get; set; } //0이라면 배우지 않은것
-	
+
+
+
 
 }
 

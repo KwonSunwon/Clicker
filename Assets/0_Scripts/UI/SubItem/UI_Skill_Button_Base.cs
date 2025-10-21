@@ -1,5 +1,7 @@
 ﻿using DG.Tweening;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,6 +10,10 @@ public class UI_Skill_Button_Base : UI_Base
 {
 	[SerializeField] int _id;
 	SkillNodeData _skillData;
+	public void SetId(int id)
+	{
+		_id = id;
+	}
 
 	enum Texts
 	{
@@ -17,10 +23,14 @@ public class UI_Skill_Button_Base : UI_Base
 	}
 	enum Images
 	{
-		//UI_NodeUp,
-		//UI_NodeDown,
-		//UI_NodeLeft,
-		//UI_NodeRight,
+		UI_NodeUp,
+		UI_NodeRightUp,
+		UI_NodeRight,
+		UI_NodeRightDown,
+		UI_NodeDown,
+		UI_NodeLeftDown,
+		UI_NodeLeft,
+		UI_NodeLeftUp,
 
 		UI_Skill_Image,
 		UI_Skill_Tree_Image
@@ -55,7 +65,43 @@ public class UI_Skill_Button_Base : UI_Base
 		Get<TextMeshProUGUI>((int)Texts.UI_Skill_Level_Text).text = $"{_skillData.Level}/{_skillData.MaxLevel}";
 
 		Get<Image>((int)Images.UI_Skill_Image).sprite = Resources.Load<Sprite>($"Art/SkillTree/Skilltree_{_id}");
-		Get<Image>((int)Images.UI_Skill_Tree_Image).sprite = Resources.Load<Sprite>($"Art/SkillTree/Skilltree_{_id}"); 
+		Get<Image>((int)Images.UI_Skill_Tree_Image).sprite = Resources.Load<Sprite>($"Art/SkillTree/Skilltree_{_id}");
+
+		RectTransform rect = GetComponent<RectTransform>();
+		Vector3 pos = rect.localPosition;
+		pos.x = _skillData.Xpos;
+		pos.y = _skillData.Ypos;
+		rect.localPosition = pos;
+
+		List<Image> _nodeImages = new List<Image>
+		{
+			Get<Image>((int)Images.UI_NodeUp),
+			Get<Image>((int)Images.UI_NodeRightUp),
+			Get<Image>((int)Images.UI_NodeRight),
+			Get<Image>((int)Images.UI_NodeRightDown),
+			Get<Image>((int)Images.UI_NodeDown),
+			Get<Image>((int)Images.UI_NodeLeftDown),
+			Get<Image>((int)Images.UI_NodeLeft),
+			Get<Image>((int)Images.UI_NodeLeftUp)
+		};
+		for (int i = 0; i < _nodeImages.Count; i++)
+		{
+			if (_nodeImages[i] != null)
+				_nodeImages[i].gameObject.SetActive(false);
+		}
+		foreach (int idx in _skillData.Edges)
+		{
+			if (idx < 0 || idx >= _nodeImages.Count)
+			{
+				Debug.LogWarning($"[UI_Skill_Button_Base] Edge idx {idx} out of range");
+				continue;
+			}
+
+			var img = _nodeImages[idx];
+			if (img != null)
+				img.gameObject.SetActive(true);
+		}
+
 
 		GameObject costBundle = Get<GameObject>((int)GameObjects.UI_Cost_Bundle);
 		foreach(var skillCost in _skillData.SkillCost)
