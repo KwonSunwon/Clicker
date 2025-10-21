@@ -48,6 +48,7 @@ public class MineralSlot
 	public BigNumber Amount;
 	public BigNumber PerTick;
 	public TextMeshProUGUI Text; // UI 연결 (없어도 동작)
+	public Sprite Sprite;
 
 	public MineralSlot(MineralType type, BigNumber startAmount, BigNumber startPerTick, TextMeshProUGUI text = null)
 	{
@@ -55,6 +56,8 @@ public class MineralSlot
 		Amount = startAmount;
 		PerTick = startPerTick;
 		Text = text;
+		Sprite = Resources.Load<Sprite>($"Art/Ore/{type}");
+		if (Sprite == null) Debug.Log($"Art/Ore/{type}가 비어있습니다");
 	}
 }
 

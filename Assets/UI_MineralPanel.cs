@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +14,6 @@ public class UI_MineralPanel : UI_Base
 	}
 	public override void Init()
 	{
-        Bind<Image>(typeof(Images));
 	}
 
 	void Start()
@@ -34,4 +33,12 @@ public class UI_MineralPanel : UI_Base
 		}
         return GetTMP((int)Texts.MineralAmountText);
     }
+	public void SetMineralImage(Sprite sprite)
+	{
+		if (GetImage((int)Images.MineralImage) == null)
+		{
+			Bind<Image>(typeof(Images));
+		}
+		GetImage((int)Images.MineralImage).sprite = sprite;
+	}
 }
