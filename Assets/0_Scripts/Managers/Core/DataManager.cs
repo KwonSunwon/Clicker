@@ -77,6 +77,7 @@ public class DataManager
 				MaxLevel = dto.maxLevel > 0 ? dto.maxLevel : 1,
 				SkillCost = new List<(MineralType mineralType, BigNumber cost)>(),
 				precedingSkills = dto.precedingSkills ?? new List<int>(),
+				//precedingSkills =  new List<int>(),
 				Level = 0,
 				Xpos = dto.xPos,
 				Ypos = dto.yPos,
