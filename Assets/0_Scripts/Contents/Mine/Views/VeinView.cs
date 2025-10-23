@@ -8,29 +8,29 @@ using UnityEngine.UI;
 
 public enum VeinType
 {
-	IronOre,
-	CopperOre,
-	Coal,
-	GoldNugget,
-	Salt,
-	Bauxite,
-	Lithium,
-	Diamond,
-	Ruby,
-	Sapphire,
-	Emerald,
-	Quartz,
-	Uranium,
-	XenonCrystal,
-	GammaStone,
-	QuantumFlux,
-	VoidCrystal,
-	DarkMatterShard,
-	StellarIron,
-	NebulaDust,
-	CosmicGlass,
-	NeutroniumOre,
-	AlienAlloy,
+    IronOre,
+    CopperOre,
+    Coal,
+    GoldNugget,
+    Salt,
+    Bauxite,
+    Lithium,
+    Diamond,
+    Ruby,
+    Sapphire,
+    Emerald,
+    Quartz,
+    Uranium,
+    XenonCrystal,
+    GammaStone,
+    QuantumFlux,
+    VoidCrystal,
+    DarkMatterShard,
+    StellarIron,
+    NebulaDust,
+    CosmicGlass,
+    NeutroniumOre,
+    AlienAlloy,
     MAX_NUM
 }
 
@@ -99,7 +99,12 @@ public class VeinView : MonoBehaviour, IPointerClickHandler
 
     public int Id { get; private set; }
     public int Pos { get; private set; }
-    public int Type { get; private set; } = (int)VeinType.MAX_NUM;
+
+    [SerializeField] private int _type = (int)VeinType.MAX_NUM;
+    public int Type {
+        get { return _type; }
+        private set { _type = value; }
+    }
 
     private Tweener _tw = null;
 
