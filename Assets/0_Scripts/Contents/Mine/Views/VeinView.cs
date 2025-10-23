@@ -8,13 +8,29 @@ using UnityEngine.UI;
 
 public enum VeinType
 {
-    Bauxiet,
-    Coal,
-    Copper,
-    Diamond,
-    Emerald,
-    Gamma,
-    Iron,
+	IronOre,
+	CopperOre,
+	Coal,
+	GoldNugget,
+	Salt,
+	Bauxite,
+	Lithium,
+	Diamond,
+	Ruby,
+	Sapphire,
+	Emerald,
+	Quartz,
+	Uranium,
+	XenonCrystal,
+	GammaStone,
+	QuantumFlux,
+	VoidCrystal,
+	DarkMatterShard,
+	StellarIron,
+	NebulaDust,
+	CosmicGlass,
+	NeutroniumOre,
+	AlienAlloy,
     MAX_NUM
 }
 
@@ -35,7 +51,7 @@ public static class VeinSpriteCatalog
 
             foreach (VeinType val in Enum.GetValues(typeof(VeinType))) {
                 if (val == VeinType.MAX_NUM) continue;
-                var s = _atlas.GetSprite(val.ToString() + "_0");
+                var s = _atlas.GetSprite(val.ToString());
                 if (s != null) {
                     _cache[(int)val] = s;
                 }

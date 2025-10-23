@@ -54,7 +54,7 @@ public class MineManager : MonoBehaviour
                 //new RockSaveDTO { Id = "00F", Hp = 1 }
                 //},
                 Veins = new() {
-                    new VeinSaveDTO { Id = "010", Pos = "005", Type = (int)VeinType.Bauxiet },
+                    new VeinSaveDTO { Id = "010", Pos = "005", Type = (int)VeinType.Bauxite },
                     new VeinSaveDTO { Id = "020", Pos = "00B", Type = (int)VeinType.Coal }
                 }
             };
@@ -82,7 +82,7 @@ public class MineManager : MonoBehaviour
                 new RockSaveDTO { Id = "10F", Hp = 6 }
                 },
                 Veins = new() {
-                    new VeinSaveDTO { Id = "110", Pos = "10A", Type = (int)VeinType.Copper },
+                    new VeinSaveDTO { Id = "110", Pos = "10A", Type = (int)VeinType.CopperOre },
                     new VeinSaveDTO { Id = "120", Pos = "102", Type = (int)VeinType.Diamond }
                 }
             };
@@ -110,7 +110,7 @@ public class MineManager : MonoBehaviour
                 new RockSaveDTO { Id = "20F", Hp = 6 }
                 },
                 Veins = new() {
-                    new VeinSaveDTO { Id = "210", Pos = "20C", Type = (int)VeinType.Iron },
+                    new VeinSaveDTO { Id = "210", Pos = "20C", Type = (int)VeinType.IronOre },
                     new VeinSaveDTO { Id = "220", Pos = "204", Type = (int)VeinType.Coal }
                 }
             };
