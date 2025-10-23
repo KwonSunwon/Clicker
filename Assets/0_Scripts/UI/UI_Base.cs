@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,95 +7,95 @@ using UnityEngine.UI;
 
 public abstract class UI_Base : MonoBehaviour
 {
-	protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
-	public abstract void Init();
+    protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
+    public abstract void Init();
 
-	private void Start()
-	{
-		Init();
-	}
+    private void Start()
+    {
+        Init();
+    }
 
-	protected void Bind<T>(Type type) where T : UnityEngine.Object
-	{
-		string[] names = Enum.GetNames(type);
-		UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
-		_objects.Add(typeof(T), objects);
+    protected void Bind<T>(Type type) where T : UnityEngine.Object
+    {
+        string[] names = Enum.GetNames(type);
+        UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
+        _objects.Add(typeof(T), objects);
 
-		for (int i = 0; i < names.Length; i++)
-		{
-			if (typeof(T) == typeof(GameObject))
-				objects[i] = Util.FindChild(gameObject, names[i], true);
-			else
-				objects[i] = Util.FindChild<T>(gameObject, names[i], true);
+        for (int i = 0; i < names.Length; i++)
+        {
+            if (typeof(T) == typeof(GameObject))
+                objects[i] = Util.FindChild(gameObject, names[i], true);
+            else
+                objects[i] = Util.FindChild<T>(gameObject, names[i], true);
 
-			if (objects[i] == null)
-				Debug.Log($"Failed to bind({names[i]})");
-		}
-	}
+            if (objects[i] == null)
+                Debug.Log($"Failed to bind({names[i]})");
+        }
+    }
 
-	protected T Get<T>(int idx) where T : UnityEngine.Object
-	{
-		UnityEngine.Object[] objects = null;
-		if (_objects.TryGetValue(typeof(T), out objects) == false)
-			return null;
+    protected T Get<T>(int idx) where T : UnityEngine.Object
+    {
+        UnityEngine.Object[] objects = null;
+        if (_objects.TryGetValue(typeof(T), out objects) == false)
+            return null;
 
-		return objects[idx] as T;
-	}
+        return objects[idx] as T;
+    }
 
-	protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
-	protected Text GetText(int idx) { return Get<Text>(idx); }
-	protected Button GetButton(int idx) { return Get<Button>(idx); }
-	protected Image GetImage(int idx) { return Get<Image>(idx); }
-	protected TextMeshProUGUI GetTMP(int idx) { return Get<TextMeshProUGUI>(idx); }
-	protected Slider GetSlider(int idx) { return Get<Slider>(idx); }
+    protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
+    protected Text GetText(int idx) { return Get<Text>(idx); }
+    protected Button GetButton(int idx) { return Get<Button>(idx); }
+    protected Image GetImage(int idx) { return Get<Image>(idx); }
+    protected TextMeshProUGUI GetTMP(int idx) { return Get<TextMeshProUGUI>(idx); }
+    protected Slider GetSlider(int idx) { return Get<Slider>(idx); }
 
-	public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
-	{
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    {
 
-		switch (type)
-		{
-			case Define.UIEvent.Click:
-				var click = Util.GetOrAddComponent<UI_PointerClickEventHandler>(go);
-				click.OnClickHandler -= action; click.OnClickHandler += action;
-				break;
+        switch (type)
+        {
+            case Define.UIEvent.Click:
+                var click = Util.GetOrAddComponent<UI_PointerClickEventHandler>(go);
+                click.OnClickHandler -= action; click.OnClickHandler += action;
+                break;
 
-			case Define.UIEvent.Enter:
-				var hoverIn = Util.GetOrAddComponent<UI_PointerEnterEventHandler>(go);
-				hoverIn.OnEnterHandler -= action; hoverIn.OnEnterHandler += action;
-				break;
+            case Define.UIEvent.Enter:
+                var hoverIn = Util.GetOrAddComponent<UI_PointerEnterEventHandler>(go);
+                hoverIn.OnEnterHandler -= action; hoverIn.OnEnterHandler += action;
+                break;
 
-			case Define.UIEvent.Exit:
-				var hoverOut = Util.GetOrAddComponent<UI_PointerExitEventHandler>(go);
-				hoverOut.OnExitHandler -= action; hoverOut.OnExitHandler += action;
-				break;
+            case Define.UIEvent.Exit:
+                var hoverOut = Util.GetOrAddComponent<UI_PointerExitEventHandler>(go);
+                hoverOut.OnExitHandler -= action; hoverOut.OnExitHandler += action;
+                break;
 
-			case Define.UIEvent.Scroll:
-				var scroll = Util.GetOrAddComponent<UI_ScrollEventHandler>(go);
-				scroll.OnScrollHandler -= action; scroll.OnScrollHandler += action;
-				break;
+            case Define.UIEvent.Scroll:
+                var scroll = Util.GetOrAddComponent<UI_ScrollEventHandler>(go);
+                scroll.OnScrollHandler -= action; scroll.OnScrollHandler += action;
+                break;
 
-			case Define.UIEvent.Drag:
-				var drag = Util.GetOrAddComponent<UI_IDragEventHandler>(go);
-				drag.OnDragHandler -= action; drag.OnDragHandler += action;
-				break;
-		}
+            case Define.UIEvent.Drag:
+                var drag = Util.GetOrAddComponent<UI_IDragEventHandler>(go);
+                drag.OnDragHandler -= action; drag.OnDragHandler += action;
+                break;
+        }
 
-	}
+    }
 
-	protected void SetLocalizedText<TEnum>() where TEnum : Enum
-	{
-		foreach (var name in Enum.GetNames(typeof(TEnum)))
-		{
-			if (Managers.Data.DialogDict.TryGetValue(name, out string localizedText))
-			{
-				var enumValue = (TEnum)Enum.Parse(typeof(TEnum), name);
-				int index = Convert.ToInt32(enumValue);
-				var tmp = GetTMP(index);
-				if (tmp != null)
-					tmp.text = localizedText;
-				else
-					Debug.LogWarning($"TextMeshPro not found for: {name}");
-			}
-		}
-	}
+    protected void SetLocalizedText<TEnum>() where TEnum : Enum
+    {
+        foreach (var name in Enum.GetNames(typeof(TEnum)))
+        {
+            if (Managers.Data.DialogDict.TryGetValue(name, out string localizedText))
+            {
+                var enumValue = (TEnum)Enum.Parse(typeof(TEnum), name);
+                int index = Convert.ToInt32(enumValue);
+                var tmp = GetTMP(index);
+                if (tmp != null)
+                    tmp.text = localizedText;
+                else
+                    Debug.LogWarning($"TextMeshPro not found for: {name}");
+            }
+        }
+    }
 }

@@ -1,0 +1,6 @@
+﻿ID,skillName,description,effectType,requiredLevel,cost,parameters
+int,string,string,string,int,long,params
+101,강화된 손가락,클릭 당 골드 획득량 10 증가,AddClickPower,5,1000,1
+102,자동화 드릴,초당 5골드 자동 획득,AddGoldPerSec,10,5000,5
+103,황금 운석,맵에 피버 오브젝트 소환,SpawnFeverObject,20,25000,"501, 15"
+104,시간 왜곡,30초간 게임 속도 2배,GameSpeedUp,30,100000,"2.0, 30"

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811162909ee22e240b42906b9b362933, type: 3}
+  m_Name: Rock
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 6402501249128470314, guid: 42195fb4046a3e243965f4220a054d35, type: 3}
+  - {fileID: 1148531609886243186, guid: 6860c2b42364fc541a0ed1316b6aeff4, type: 3}
+  - {fileID: -1692059105670008613, guid: e7033291130e7874181bd27cba16b0cc, type: 3}
+  - {fileID: -8028498679439889431, guid: 67387a9a038334745981a6e64c36c92b, type: 3}
+  - {fileID: -8704693900840270329, guid: 7f954909d3c7393449b4493e78644b8f, type: 3}
+  - {fileID: 4375917325001419648, guid: d6b941c416e347f4ea36a71340a49b86, type: 3}
